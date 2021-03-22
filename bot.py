@@ -18,7 +18,7 @@ from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 
 logging.basicConfig(level=logging.DEBUG)
 
-BOT_TOKEN = ''
+BOT_TOKEN = '1751857325:AAGmVcJn048qm_EXFDB8tO28Q2mElx-6KSg'
 
 bot = Bot(token=BOT_TOKEN)
 
