@@ -15,7 +15,7 @@ from db import users_db
 
 logging.basicConfig(level=logging.DEBUG)
 
-BOT_TOKEN = '1767589392:AAG_A359ruZWcbfGQL-u5icTH5ljSZRERYQ'
+BOT_TOKEN = '1751857325:AAGmVcJn048qm_EXFDB8tO28Q2mElx-6KSg'
 
 bot = Bot(token=BOT_TOKEN)
 
