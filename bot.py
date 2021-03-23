@@ -1,24 +1,24 @@
 import logging
-
+import random
+import string
+import emoji
 import aiogram.utils.markdown as md
-import sqlite3
-import re
-from aiogram import Bot, types
-from aiogram.dispatcher import Dispatcher
-from aiogram.utils import executor
+
 from aiogram import Bot, Dispatcher, types
 from aiogram.contrib.fsm_storage.memory import MemoryStorage
 from aiogram.dispatcher import FSMContext
 from aiogram.dispatcher.filters.state import State, StatesGroup
-from aiogram.types import ParseMode, update
-from aiogram.types.message import ContentTypes
+from aiogram.types import ParseMode
+
 from aiogram.types.reply_keyboard import ReplyKeyboardMarkup
 from aiogram.utils import executor
-from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
+
+from messages import *
+from db import users_db
 
 logging.basicConfig(level=logging.DEBUG)
 
-BOT_TOKEN = '1751857325:AAGmVcJn048qm_EXFDB8tO28Q2mElx-6KSg'
+BOT_TOKEN = '1767589392:AAG_A359ruZWcbfGQL-u5icTH5ljSZRERYQ'
 
 bot = Bot(token=BOT_TOKEN)
 
@@ -41,10 +41,12 @@ class \
 
 @dp.message_handler(commands='start')
 async def start_cmd(message: types.Message):
-    with open('userlog.txt', 'a') as file:  # Создается текстовый файл
-        # в него записывается ID пользователя, его юзернейм и дата нажатия на кнопку START в боте.
-        file.write(
-            f'\n\nUser ID: {message.from_user.id}\n\nUsername: {message.from_user.username}\n\nDate visited: {message.date}\n----------------------')
+    if not users_db.find_one({"chat_id": message.chat.id}):
+        users_db.insert_one({"chat_id": message.chat.id})
+        await bot.send_message(message.chat.id, HELLO_MESSAGE)
+        # Если пользователь есть в базе
+    else:
+        await bot.send_message(message.chat.id, HELLO_AGAIN_MESSAGE)
     chatId = message.chat.id
     text = message.text.lower()
     keyboard = ReplyKeyboardMarkup(
@@ -76,15 +78,11 @@ async def start_cmd(message: types.Message):
         ),
         parse_mode=ParseMode.MARKDOWN,
     )
-    with open('userlog.txt', 'a') as file:  # Создается текстовый файл
-        # в него записывается ID пользователя, его юзернейм и дата нажатия на кнопку START в боте.
-        file.write(
-            f'\n\nUser ID: {message.from_user.id}\n\nUsername: {message.from_user.username}\n\nDate visited: {message.date}\n----------------------')
     chatId = message.chat.id
     text = message.text.lower()
     keyboard = ReplyKeyboardMarkup(
         resize_keyboard=True, one_time_keyboard=False)
-    buttons = ['Оборудование для грибных ферм', 'LED светодиодное освещение', 'О компании', 'Заказать расчёт оборудывания']
+    buttons = ['Оборудование для грибных ферм', 'LED светодиодное освещение', 'О компании']
     for button in buttons:
         keyboard.add(button)
     await bot.send_message(
@@ -102,14 +100,10 @@ async def start_cmd(message: types.Message):
 
 @dp.message_handler(state='*', text='Оборудование для грибных ферм')
 async def voice_pitch(message: types.Message, state: FSMContext):
-    with open('userlog.txt', 'a') as file:  # Создается текстовый файл
-        # в него записывается ID пользователя, его юзернейм и дата нажатия на кнопку START в боте.
-        file.write(
-            f'\n\nUser ID: {message.from_user.id}\n\nUsername: {message.from_user.username}\n\nDate visited: {message.date}\n----------------------')
     await Form.voice.set()
     keyboard = ReplyKeyboardMarkup(
         resize_keyboard=True, one_time_keyboard=False)
-    buttons = ["Аллюминевые стеллажи для выращивания грибов, шампиньонов", "Оборудование для сбора шапьпиньонов",
+    buttons = ['✔Закaзать расчёт оборудывания', "Аллюминевые стеллажи для выращивания грибов, шампиньонов", "Оборудование для сбора шапьпиньонов",
                "Дополнительное оборудование", "Назад"]
     for button in buttons:
         keyboard.add(button)
@@ -127,14 +121,10 @@ async def voice_pitch(message: types.Message, state: FSMContext):
 
 @dp.message_handler(state='*', text='LED светодиодное освещение')
 async def voice_pitch(message: types.Message, state: FSMContext):
-    with open('userlog.txt', 'a') as file:  # Создается текстовый файл
-        # в него записывается ID пользователя, его юзернейм и дата нажатия на кнопку START в боте.
-        file.write(
-            f'\n\nUser ID: {message.from_user.id}\n\nUsername: {message.from_user.username}\n\nDate visited: {message.date}\n----------------------')
     await Form.voice.set()
     keyboard = ReplyKeyboardMarkup(
         resize_keyboard=True, one_time_keyboard=False)
-    buttons = ["Уличное освещение", "Промышленное освещение", "Торговое освещение", "Фито-освещение", "Возврат"]
+    buttons = ['✔Заказать расчёт оборудывания', "Уличное освещение", "Промышленное освещение", "Торговое освещение", "Фито-освещение", "Возврат"]
     for button in buttons:
         keyboard.add(button)
     await bot.send_message(
@@ -150,10 +140,6 @@ async def voice_pitch(message: types.Message, state: FSMContext):
 
     @dp.message_handler(state='*', text=['О компании'])
     async def wiki_request(message: types.Message):
-        with open('userlog.txt', 'a') as file:  # Создается текстовый файл
-            # в него записывается ID пользователя, его юзернейм и дата нажатия на кнопку START в боте.
-            file.write(
-                f'\n\nUser ID: {message.from_user.id}\n\nUsername: {message.from_user.username}\n\nDate visited: {message.date}\n----------------------')
         await Form.wiki.set()
         await bot.send_message(
             message.chat.id,
@@ -180,7 +166,7 @@ async def voice_pitch(message: types.Message, state: FSMContext):
     await Form.voice.set()
     keyboard = ReplyKeyboardMarkup(
         resize_keyboard=True, one_time_keyboard=False)
-    buttons = ["Аллюминевые стеллажи для выращивания грибов, шампиньонов", "Оборудование для сбора шапьпиньонов",
+    buttons = ['✔Закaзать расчёт оборудывания', "Аллюминевые стеллажи для выращивания грибов, шампиньонов", "Оборудование для сбора шапьпиньонов",
                "Дополнительное оборудование", "Назад"]
     for button in buttons:
         keyboard.add(button)
@@ -402,7 +388,7 @@ async def voice_pitch(message: types.Message, state: FSMContext):
     await Form.voice.set()
     keyboard = ReplyKeyboardMarkup(
         resize_keyboard=True, one_time_keyboard=False)
-    buttons = ["Уличное освещение", "Промышленное освещение", "Торговое освещение", "Фито-освещение", "Возврат"]
+    buttons = ['✔Заказать расчёт оборудывания',"Уличное освещение", "Промышленное освещение", "Торговое освещение", "Фито-освещение", "Возврат"]
     for button in buttons:
         keyboard.add(button)
     await bot.send_message(
@@ -415,6 +401,7 @@ async def voice_pitch(message: types.Message, state: FSMContext):
         reply_markup=keyboard,
         parse_mode=ParseMode.MARKDOWN,
     )
+
 
 @dp.message_handler(state='*', text=['Отмена'])
 async def cancel(message: types.Message, state: FSMContext):
@@ -833,15 +820,11 @@ async def wiki_request(message: types.Message):
 
 
 #################################################################################################################################################
-@dp.message_handler(state='*', text='Заказать расчёт оборудывания')
+@dp.message_handler(state='*', text='✔Заказать расчёт оборудывания')
 async def voice_pitch(message: types.Message, state: FSMContext):
-    await bot.send_message(
-        message.chat.id,
-        'GreenAl-Trade Line 20',
-    )
     keyboard = types.InlineKeyboardMarkup()
     url_button = types.InlineKeyboardButton(text="Написать консультанту!",
-                                            url="https://www.green-al-light.ru/catalog/tovar/26/")
+                                            url="https://t.me/ilnary")
     keyboard.add(url_button)
     await bot.send_message(message.chat.id, md.text(
         md.text("", md.bold("Добрый день!")),
@@ -851,6 +834,22 @@ async def voice_pitch(message: types.Message, state: FSMContext):
         sep='\n'
 
     ), reply_markup=keyboard),
+
+@dp.message_handler(state='*', text='✔Закaзать расчёт оборудывания')
+async def voice_pitch(message: types.Message, state: FSMContext):
+    keyboard = types.InlineKeyboardMarkup()
+    url_button = types.InlineKeyboardButton(text="Написать консультанту!",
+                                            url="https://t.me/ilnary")
+    keyboard.add(url_button)
+    await bot.send_message(message.chat.id, md.text(
+        md.text("", md.bold("Добрый день!")),
+        md.text('Меня зовут ФИО'),
+        md.text('По вопросам заказа оборудывания обращайтесь комне!'),
+        md.text('Всегда рад помочь вам'),
+        sep='\n'
+
+    ), reply_markup=keyboard),
+
 
 #####################################################################################################################################################3
 @dp.message_handler(state='*', text='🇬🇧English')
@@ -897,7 +896,8 @@ async def voice_pitch(message: types.Message, state: FSMContext):
     await Form.voice.set()
     keyboard = ReplyKeyboardMarkup(
         resize_keyboard=True, one_time_keyboard=False)
-    buttons = ["Aluminum racks for growing mushrooms, champignons ", " Equipment for collecting chappignons ", "Additional equipment", "Back"]
+    buttons = ['Ordеr equipment calculation', "Aluminum racks for growing mushrooms, champignons ", " Equipment for collecting chappignons ",
+               "Additional equipment", "Back"]
     for button in buttons:
         keyboard.add(button)
     await bot.send_message(
@@ -921,7 +921,7 @@ async def voice_pitch(message: types.Message, state: FSMContext):
     await Form.voice.set()
     keyboard = ReplyKeyboardMarkup(
         resize_keyboard=True, one_time_keyboard=False)
-    buttons = ["Street lighting ", " Industrial lighting ", " Commercial lighting ", " Phyto-lighting ", " Return"]
+    buttons = ['Order equipment calculation', "Street lighting ", " Industrial lighting ", " Commercial lighting ", " Phyto-lighting ", " Return"]
     for button in buttons:
         keyboard.add(button)
     await bot.send_message(
@@ -967,7 +967,8 @@ async def voice_pitch(message: types.Message, state: FSMContext):
     await Form.voice.set()
     keyboard = ReplyKeyboardMarkup(
         resize_keyboard=True, one_time_keyboard=False)
-    buttons = ["Aluminum racks for growing mushrooms, champignons ", " Equipment for collecting chappignons ", "Additional equipment", "Back"]
+    buttons = ['Ordеr equipment calculation', "Aluminum racks for growing mushrooms, champignons ", " Equipment for collecting chappignons ",
+               "Additional equipment", "Back"]
     for button in buttons:
         keyboard.add(button)
     await bot.send_message(
@@ -989,7 +990,7 @@ async def cancel(message: types.Message, state: FSMContext):
         file.write(
             f'\n\nUser ID: {message.from_user.id}\n\nUsername: {message.from_user.username}\n\nDate visited: {message.date}\n----------------------')
     keyboard = ReplyKeyboardMarkup(resize_keyboard=True)
-    btns = ["Equipment for mushroom farms "," LED lighting "," About the company"]
+    btns = ["Equipment for mushroom farms ", " LED lighting ", " About the company"]
     for btn in btns:
         keyboard.add(btn)
     await state.finish()
@@ -1188,7 +1189,7 @@ async def voice_pitch(message: types.Message, state: FSMContext):
     await Form.voice.set()
     keyboard = ReplyKeyboardMarkup(
         resize_keyboard=True, one_time_keyboard=False)
-    buttons = ["Street lighting ", " Industrial lighting ", " Commercial lighting ", " Phyto-lighting ", " Return"]
+    buttons = ['Order equipment calculation', "Street lighting ", " Industrial lighting ", " Commercial lighting ", " Phyto-lighting ", " Return"]
     for button in buttons:
         keyboard.add(button)
     await bot.send_message(
@@ -1202,6 +1203,7 @@ async def voice_pitch(message: types.Message, state: FSMContext):
         parse_mode=ParseMode.MARKDOWN,
     )
 
+
 @dp.message_handler(state='*', text=['Cancellation'])
 async def cancel(message: types.Message, state: FSMContext):
     with open('userlog.txt', 'a') as file:  # Создается текстовый файл
@@ -1209,7 +1211,7 @@ async def cancel(message: types.Message, state: FSMContext):
         file.write(
             f'\n\nUser ID: {message.from_user.id}\n\nUsername: {message.from_user.username}\n\nDate visited: {message.date}\n----------------------')
     keyboard = ReplyKeyboardMarkup(resize_keyboard=True)
-    btns = ["Equipment for mushroom farms "," LED lighting "," About the company"]
+    btns = ["Equipment for mushroom farms ", " LED lighting ", " About the company"]
     for btn in btns:
         keyboard.add(btn)
     await state.finish()
@@ -1590,7 +1592,7 @@ async def default_test(message):
 @dp.message_handler(state='*', text=['Return'])
 async def cancel(message: types.Message, state: FSMContext):
     keyboard = ReplyKeyboardMarkup(resize_keyboard=True)
-    btns = ['Equipment for mushroom farms ',' LED lighting ',' About the company']
+    btns = ['Equipment for mushroom farms ', ' LED lighting ', ' About the company']
     for btn in btns:
         keyboard.add(btn)
     await state.finish()
@@ -1620,7 +1622,38 @@ async def wiki_request(message: types.Message):
 
         ),
     )
+
+
 ############################################################################################################################################
+@dp.message_handler(state='*', text='Order equipment calculation')
+async def voice_pitch(message: types.Message, state: FSMContext):
+    keyboard = types.InlineKeyboardMarkup()
+    url_button = types.InlineKeyboardButton(text="Write to a consultant!",
+                                            url="https://t.me/ilnary")
+    keyboard.add(url_button)
+    await bot.send_message(message.chat.id, md.text(
+        md.text("", md.bold("Good day!")),
+        md.text('My name is ФИО'),
+        md.text('For ordering equipment, please contact me!'),
+        md.text('Always happy to help you'),
+        sep='\n'
+
+    ), reply_markup=keyboard),
+
+@dp.message_handler(state='*', text='Ordеr equipment calculation')
+async def voice_pitch(message: types.Message, state: FSMContext):
+    keyboard = types.InlineKeyboardMarkup()
+    url_button = types.InlineKeyboardButton(text="Write to a consultant!",
+                                            url="https://t.me/ilnary")
+    keyboard.add(url_button)
+    await bot.send_message(message.chat.id, md.text(
+        md.text("", md.bold("Good day!")),
+        md.text('My name is ФИО'),
+        md.text('For ordering equipment, please contact me!'),
+        md.text('Always happy to help you'),
+        sep='\n'
+
+    ), reply_markup=keyboard),
 
 #####################################################################################################################################################
 @dp.message_handler(state='*', text='🇹🇷Türk')
@@ -1667,7 +1700,8 @@ async def voice_pitch(message: types.Message, state: FSMContext):
     await Form.voice.set()
     keyboard = ReplyKeyboardMarkup(
         resize_keyboard=True, one_time_keyboard=False)
-    buttons = ["Mantar, petrol yetiştirmek için alüminyum raflar " ," Şappignon toplama ekipmanı ", "Ek donanım", "Geri"]
+    buttons = ['Sipаriş ekipmanı hesaplama',"Mantar, petrol yetiştirmek için alüminyum raflar ", " Şappignon toplama ekipmanı ", "Ek donanım",
+               "Geri"]
     for button in buttons:
         keyboard.add(button)
     await bot.send_message(
@@ -1691,7 +1725,7 @@ async def voice_pitch(message: types.Message, state: FSMContext):
     await Form.voice.set()
     keyboard = ReplyKeyboardMarkup(
         resize_keyboard=True, one_time_keyboard=False)
-    buttons = ["Sokak aydınlatması " ," Endüstriyel aydınlatma " ," Ticari aydınlatma " ," Fito aydınlatma " ," Dönüş"]
+    buttons = ['Sipariş ekipmanı hesaplama', "Sokak aydınlatması ", " Endüstriyel aydınlatma ", " Ticari aydınlatma ", " Fito aydınlatma ", " Dönüş"]
     for button in buttons:
         keyboard.add(button)
     await bot.send_message(
@@ -1737,7 +1771,8 @@ async def voice_pitch(message: types.Message, state: FSMContext):
     await Form.voice.set()
     keyboard = ReplyKeyboardMarkup(
         resize_keyboard=True, one_time_keyboard=False)
-    buttons = ["Mantar, petrol yetiştirmek için alüminyum raflar " ," Şappignon toplama ekipmanı " ,"Ek donanım" ,"Geri"]
+    buttons = ['Sipаriş ekipmanı hesaplama', "Mantar, petrol yetiştirmek için alüminyum raflar ", " Şappignon toplama ekipmanı ", "Ek donanım",
+               "Geri"]
     for button in buttons:
         keyboard.add(button)
     await bot.send_message(
@@ -1759,7 +1794,7 @@ async def cancel(message: types.Message, state: FSMContext):
         file.write(
             f'\n\nUser ID: {message.from_user.id}\n\nUsername: {message.from_user.username}\n\nDate visited: {message.date}\n----------------------')
     keyboard = ReplyKeyboardMarkup(resize_keyboard=True)
-    btns = ["Mantar çiftlikleri için donatım "," LED aydınlatma "," Şirket hakkında"]
+    btns = ["Mantar çiftlikleri için donatım ", " LED aydınlatma ", " Şirket hakkında"]
     for btn in btns:
         keyboard.add(btn)
     await state.finish()
@@ -1958,7 +1993,7 @@ async def voice_pitch(message: types.Message, state: FSMContext):
     await Form.voice.set()
     keyboard = ReplyKeyboardMarkup(
         resize_keyboard=True, one_time_keyboard=False)
-    buttons = ["Sokak aydınlatması " ," Endüstriyel aydınlatma " ," Ticari aydınlatma " ," Fito aydınlatma " ," Dönüş"]
+    buttons = ['Sipariş ekipmanı hesaplama', "Sokak aydınlatması ", " Endüstriyel aydınlatma ", " Ticari aydınlatma ", " Fito aydınlatma ", " Dönüş"]
     for button in buttons:
         keyboard.add(button)
     await bot.send_message(
@@ -1971,6 +2006,7 @@ async def voice_pitch(message: types.Message, state: FSMContext):
         reply_markup=keyboard,
         parse_mode=ParseMode.MARKDOWN,
     )
+
 
 @dp.message_handler(state='*', text=['İptal'])
 async def cancel(message: types.Message, state: FSMContext):
@@ -2386,8 +2422,38 @@ async def wiki_request(message: types.Message):
 
         ),
     )
-################################################################################################################################################
 
+
+################################################################################################################################################
+@dp.message_handler(state='*', text='Sipariş ekipmanı hesaplama')
+async def voice_pitch(message: types.Message, state: FSMContext):
+    keyboard = types.InlineKeyboardMarkup()
+    url_button = types.InlineKeyboardButton(text="Bir danışmana yaz",
+                                            url="https://t.me/ilnary")
+    keyboard.add(url_button)
+    await bot.send_message(message.chat.id, md.text(
+        md.text("", md.bold("güzel gün")),
+        md.text('Benim ismim ФИО'),
+        md.text('Ekipman siparişi ile ilgili herhangi bir sorunuz varsa, lütfen benimle iletişime geçin!'),
+        md.text('Sana yardım etmekten her zaman mutluluk duyarım'),
+        sep='\n'
+
+    ), reply_markup=keyboard),
+
+@dp.message_handler(state='*', text='Sipаriş ekipmanı hesaplama')
+async def voice_pitch(message: types.Message, state: FSMContext):
+    keyboard = types.InlineKeyboardMarkup()
+    url_button = types.InlineKeyboardButton(text="Bir danışmana yaz",
+                                            url="https://t.me/ilnary")
+    keyboard.add(url_button)
+    await bot.send_message(message.chat.id, md.text(
+        md.text("", md.bold("güzel gün")),
+        md.text('Benim ismim ФИО'),
+        md.text('Ekipman siparişi ile ilgili herhangi bir sorunuz varsa, lütfen benimle iletişime geçin!'),
+        md.text('Sana yardım etmekten her zaman mutluluk duyarım'),
+        sep='\n'
+
+    ), reply_markup=keyboard),
 #######################################################################################################################################################
 @dp.message_handler(state='*', text='🇵🇱Polskie')
 async def start_cmd(message: types.Message):
@@ -2739,6 +2805,7 @@ async def voice_pitch(message: types.Message, state: FSMContext):
         reply_markup=keyboard,
         parse_mode=ParseMode.MARKDOWN,
     )
+
 
 @dp.message_handler(state='*', text=['Отмена'])
 async def cancel(message: types.Message, state: FSMContext):
@@ -3154,7 +3221,37 @@ async def wiki_request(message: types.Message):
 
         ),
     )
+################################################################################################################################################
+@dp.message_handler(state='*', text='Sipariş ekipmanı hesaplama')
+async def voice_pitch(message: types.Message, state: FSMContext):
+    keyboard = types.InlineKeyboardMarkup()
+    url_button = types.InlineKeyboardButton(text="Bir danışmana yaz",
+                                            url="https://t.me/ilnary")
+    keyboard.add(url_button)
+    await bot.send_message(message.chat.id, md.text(
+        md.text("", md.bold("güzel gün")),
+        md.text('Benim ismim ФИО'),
+        md.text('Ekipman siparişi ile ilgili herhangi bir sorunuz varsa, lütfen benimle iletişime geçin!'),
+        md.text('Sana yardım etmekten her zaman mutluluk duyarım'),
+        sep='\n'
 
+    ), reply_markup=keyboard),
 
+@dp.message_handler(state='*', text='Sipаriş ekipmanı hesaplama')
+async def voice_pitch(message: types.Message, state: FSMContext):
+    keyboard = types.InlineKeyboardMarkup()
+    url_button = types.InlineKeyboardButton(text="Bir danışmana yaz",
+                                            url="https://t.me/ilnary")
+    keyboard.add(url_button)
+    await bot.send_message(message.chat.id, md.text(
+        md.text("", md.bold("güzel gün")),
+        md.text('Benim ismim ФИО'),
+        md.text('Ekipman siparişi ile ilgili herhangi bir sorunuz varsa, lütfen benimle iletişime geçin!'),
+        md.text('Sana yardım etmekten her zaman mutluluk duyarım'),
+        sep='\n'
+
+    ), reply_markup=keyboard),
+
+##################################################################################################################################################
 
 executor.start_polling(dp, skip_updates=True)
