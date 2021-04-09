@@ -2,7 +2,6 @@ import logging
 import random
 import string
 import aiogram.utils.markdown as md
-import keyboard as keyboard
 
 from aiogram import Bot, Dispatcher, types
 from aiogram.contrib.fsm_storage.memory import MemoryStorage
