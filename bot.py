@@ -1,7 +1,6 @@
 import logging
 import random
 import string
-import emoji
 import aiogram.utils.markdown as md
 import keyboard as keyboard
 
