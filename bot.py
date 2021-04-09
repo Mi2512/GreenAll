@@ -1,5 +1,9 @@
 import logging
+import random
+import string
+import emoji
 import aiogram.utils.markdown as md
+import keyboard as keyboard
 
 from aiogram import Bot, Dispatcher, types
 from aiogram.contrib.fsm_storage.memory import MemoryStorage
@@ -10,9 +14,12 @@ from aiogram.types import ParseMode
 from aiogram.types.reply_keyboard import ReplyKeyboardMarkup
 from aiogram.utils import executor
 
+from messages import *
+from db import users_db
+
 logging.basicConfig(level=logging.DEBUG)
 
-BOT_TOKEN = '1751857325:AAGmVcJn048qm_EXFDB8tO28Q2mElx-6KSg'
+BOT_TOKEN = '1767589392:AAG_A359ruZWcbfGQL-u5icTH5ljSZRERYQ'
 
 bot = Bot(token=BOT_TOKEN)
 
@@ -97,7 +104,8 @@ async def voice_pitch(message: types.Message, state: FSMContext):
     await Form.voice.set()
     keyboard = ReplyKeyboardMarkup(
         resize_keyboard=True, one_time_keyboard=False)
-    buttons = ['✔Закaзать расчёт оборудывания', "Аллюминевые стеллажи для выращивания грибов, шампиньонов", "Оборудование для сбора шапьпиньонов",
+    buttons = ['✏️Закaзать расчёт оборудывания', "Аллюминевые стеллажи для выращивания грибов, шампиньонов",
+               "Оборудование для сбора шапьпиньонов",
                "Дополнительное оборудование", "Назад"]
     for button in buttons:
         keyboard.add(button)
@@ -118,7 +126,8 @@ async def voice_pitch(message: types.Message, state: FSMContext):
     await Form.voice.set()
     keyboard = ReplyKeyboardMarkup(
         resize_keyboard=True, one_time_keyboard=False)
-    buttons = ['✔Заказать расчёт оборудывания', "Уличное освещение", "Промышленное освещение", "Торговое освещение", "Фито-освещение", "Возврат"]
+    buttons = ['✏️Заказать расчёт оборудывания', "Уличное освещение", "Промышленное освещение", "Торговое освещение",
+               "Фито-освещение", "Возврат"]
     for button in buttons:
         keyboard.add(button)
     await bot.send_message(
@@ -160,7 +169,8 @@ async def voice_pitch(message: types.Message, state: FSMContext):
     await Form.voice.set()
     keyboard = ReplyKeyboardMarkup(
         resize_keyboard=True, one_time_keyboard=False)
-    buttons = ['✔Закaзать расчёт оборудывания', "Аллюминевые стеллажи для выращивания грибов, шампиньонов", "Оборудование для сбора шапьпиньонов",
+    buttons = ['✏️Закaзать расчёт оборудывания', "Аллюминевые стеллажи для выращивания грибов, шампиньонов",
+               "Оборудование для сбора шапьпиньонов",
                "Дополнительное оборудование", "Назад"]
     for button in buttons:
         keyboard.add(button)
@@ -382,7 +392,8 @@ async def voice_pitch(message: types.Message, state: FSMContext):
     await Form.voice.set()
     keyboard = ReplyKeyboardMarkup(
         resize_keyboard=True, one_time_keyboard=False)
-    buttons = ['✔Заказать расчёт оборудывания',"Уличное освещение", "Промышленное освещение", "Торговое освещение", "Фито-освещение", "Возврат"]
+    buttons = ['✏️Заказать расчёт оборудывания', "Уличное освещение", "Промышленное освещение", "Торговое освещение",
+               "Фито-освещение", "Возврат"]
     for button in buttons:
         keyboard.add(button)
     await bot.send_message(
@@ -421,10 +432,6 @@ async def default_test(message):
     file = open('GreenAlStreetA30.jpg', 'rb')
     await bot.send_photo(message.chat.id, photo=file)
     file.close()
-    keyboard = types.InlineKeyboardMarkup()
-    url_button = types.InlineKeyboardButton(text="Подробности на сайте!",
-                                            url="https://www.green-al-light.ru/catalog/tovar/15/")
-    keyboard.add(url_button),
     keyboard = types.InlineKeyboardMarkup()
     url_button = types.InlineKeyboardButton(text="Подробности на сайте!",
                                             url="https://www.green-al-light.ru/catalog/tovar/15/")
@@ -814,30 +821,31 @@ async def wiki_request(message: types.Message):
 
 
 #################################################################################################################################################
-@dp.message_handler(state='*', text='✔Заказать расчёт оборудывания')
+@dp.message_handler(state='*', text='✏️Заказать расчёт оборудывания')
 async def voice_pitch(message: types.Message, state: FSMContext):
     keyboard = types.InlineKeyboardMarkup()
     url_button = types.InlineKeyboardButton(text="Написать консультанту!",
                                             url="https://t.me/ilnary")
     keyboard.add(url_button)
     await bot.send_message(message.chat.id, md.text(
-        md.text("", md.bold("Добрый день!")),
-        md.text('Меня зовут ФИО'),
-        md.text('По вопросам заказа оборудывания обращайтесь комне!'),
+        md.text("Добрый день!"),
+        md.text('Меня зовут Ильнар'),
+        md.text('По вопросам заказа оборудывания обращайтесь ко мне!'),
         md.text('Всегда рад помочь вам'),
         sep='\n'
 
     ), reply_markup=keyboard),
 
-@dp.message_handler(state='*', text='✔Закaзать расчёт оборудывания')
+
+@dp.message_handler(state='*', text='✏️Закaзать расчёт оборудывания')
 async def voice_pitch(message: types.Message, state: FSMContext):
     keyboard = types.InlineKeyboardMarkup()
     url_button = types.InlineKeyboardButton(text="Написать консультанту!",
-                                            url="https://t.me/ilnary")
+                                            url="https://t.me/MaratZainashev")
     keyboard.add(url_button)
     await bot.send_message(message.chat.id, md.text(
-        md.text("", md.bold("Добрый день!")),
-        md.text('Меня зовут ФИО'),
+        md.text("Добрый день!"),
+        md.text('Меня зовут Марат'),
         md.text('По вопросам заказа оборудывания обращайтесь комне!'),
         md.text('Всегда рад помочь вам'),
         sep='\n'
@@ -890,7 +898,8 @@ async def voice_pitch(message: types.Message, state: FSMContext):
     await Form.voice.set()
     keyboard = ReplyKeyboardMarkup(
         resize_keyboard=True, one_time_keyboard=False)
-    buttons = ['Ordеr equipment calculation', "Aluminum racks for growing mushrooms, champignons ", " Equipment for collecting chappignons ",
+    buttons = ['✏️Ordеr equipment calculation', "Aluminum racks for growing mushrooms, champignons ",
+               " Equipment for collecting chappignons ",
                "Additional equipment", "Back"]
     for button in buttons:
         keyboard.add(button)
@@ -915,7 +924,8 @@ async def voice_pitch(message: types.Message, state: FSMContext):
     await Form.voice.set()
     keyboard = ReplyKeyboardMarkup(
         resize_keyboard=True, one_time_keyboard=False)
-    buttons = ['Order equipment calculation', "Street lighting ", " Industrial lighting ", " Commercial lighting ", " Phyto-lighting ", " Return"]
+    buttons = ['✏️Order equipment calculation', "Street lighting ", " Industrial lighting ", " Commercial lighting ",
+               " Phyto-lighting ", " Return"]
     for button in buttons:
         keyboard.add(button)
     await bot.send_message(
@@ -961,7 +971,8 @@ async def voice_pitch(message: types.Message, state: FSMContext):
     await Form.voice.set()
     keyboard = ReplyKeyboardMarkup(
         resize_keyboard=True, one_time_keyboard=False)
-    buttons = ['Ordеr equipment calculation', "Aluminum racks for growing mushrooms, champignons ", " Equipment for collecting chappignons ",
+    buttons = ['Ordеr equipment calculation', "Aluminum racks for growing mushrooms, champignons ",
+               " Equipment for collecting chappignons ",
                "Additional equipment", "Back"]
     for button in buttons:
         keyboard.add(button)
@@ -1183,7 +1194,8 @@ async def voice_pitch(message: types.Message, state: FSMContext):
     await Form.voice.set()
     keyboard = ReplyKeyboardMarkup(
         resize_keyboard=True, one_time_keyboard=False)
-    buttons = ['Order equipment calculation', "Street lighting ", " Industrial lighting ", " Commercial lighting ", " Phyto-lighting ", " Return"]
+    buttons = ['✏️Order equipment calculation', "Street lighting ", " Industrial lighting ", " Commercial lighting ",
+               " Phyto-lighting ", " Return"]
     for button in buttons:
         keyboard.add(button)
     await bot.send_message(
@@ -1619,35 +1631,37 @@ async def wiki_request(message: types.Message):
 
 
 ############################################################################################################################################
-@dp.message_handler(state='*', text='Order equipment calculation')
+@dp.message_handler(state='*', text='✏️Order equipment calculation')
 async def voice_pitch(message: types.Message, state: FSMContext):
     keyboard = types.InlineKeyboardMarkup()
     url_button = types.InlineKeyboardButton(text="Write to a consultant!",
                                             url="https://t.me/ilnary")
     keyboard.add(url_button)
     await bot.send_message(message.chat.id, md.text(
-        md.text("", md.bold("Good day!")),
-        md.text('My name is ФИО'),
+        md.text("Good day!"),
+        md.text('My name is Ilnar'),
         md.text('For ordering equipment, please contact me!'),
         md.text('Always happy to help you'),
         sep='\n'
 
     ), reply_markup=keyboard),
 
-@dp.message_handler(state='*', text='Ordеr equipment calculation')
+
+@dp.message_handler(state='*', text='✏️Ordеr equipment calculation')
 async def voice_pitch(message: types.Message, state: FSMContext):
     keyboard = types.InlineKeyboardMarkup()
     url_button = types.InlineKeyboardButton(text="Write to a consultant!",
-                                            url="https://t.me/ilnary")
+                                            url="https://t.me/MaratZainashev")
     keyboard.add(url_button)
     await bot.send_message(message.chat.id, md.text(
-        md.text("", md.bold("Good day!")),
-        md.text('My name is ФИО'),
+        md.text("Good day!"),
+        md.text('My name is Marat'),
         md.text('For ordering equipment, please contact me!'),
         md.text('Always happy to help you'),
         sep='\n'
 
     ), reply_markup=keyboard),
+
 
 #####################################################################################################################################################
 @dp.message_handler(state='*', text='🇹🇷Türk')
@@ -1694,7 +1708,8 @@ async def voice_pitch(message: types.Message, state: FSMContext):
     await Form.voice.set()
     keyboard = ReplyKeyboardMarkup(
         resize_keyboard=True, one_time_keyboard=False)
-    buttons = ['Sipаriş ekipmanı hesaplama',"Mantar, petrol yetiştirmek için alüminyum raflar ", " Şappignon toplama ekipmanı ", "Ek donanım",
+    buttons = ['✏️Sipаriş ekipmanı hesaplama', "Mantar, petrol yetiştirmek için alüminyum raflar ",
+               " Şappignon toplama ekipmanı ", "Ek donanım",
                "Geri"]
     for button in buttons:
         keyboard.add(button)
@@ -1719,7 +1734,8 @@ async def voice_pitch(message: types.Message, state: FSMContext):
     await Form.voice.set()
     keyboard = ReplyKeyboardMarkup(
         resize_keyboard=True, one_time_keyboard=False)
-    buttons = ['Sipariş ekipmanı hesaplama', "Sokak aydınlatması ", " Endüstriyel aydınlatma ", " Ticari aydınlatma ", " Fito aydınlatma ", " Dönüş"]
+    buttons = ['✏️Sipariş ekipmanı hesaplama', "Sokak aydınlatması ", " Endüstriyel aydınlatma ", " Ticari aydınlatma ",
+               " Fito aydınlatma ", " Dönüş"]
     for button in buttons:
         keyboard.add(button)
     await bot.send_message(
@@ -1765,7 +1781,8 @@ async def voice_pitch(message: types.Message, state: FSMContext):
     await Form.voice.set()
     keyboard = ReplyKeyboardMarkup(
         resize_keyboard=True, one_time_keyboard=False)
-    buttons = ['Sipаriş ekipmanı hesaplama', "Mantar, petrol yetiştirmek için alüminyum raflar ", " Şappignon toplama ekipmanı ", "Ek donanım",
+    buttons = ['✏️Sipаriş ekipmanı hesaplama', "Mantar, petrol yetiştirmek için alüminyum raflar ",
+               " Şappignon toplama ekipmanı ", "Ek donanım",
                "Geri"]
     for button in buttons:
         keyboard.add(button)
@@ -1788,7 +1805,7 @@ async def cancel(message: types.Message, state: FSMContext):
         file.write(
             f'\n\nUser ID: {message.from_user.id}\n\nUsername: {message.from_user.username}\n\nDate visited: {message.date}\n----------------------')
     keyboard = ReplyKeyboardMarkup(resize_keyboard=True)
-    btns = ["Mantar çiftlikleri için donatım ", " LED aydınlatma ", " Şirket hakkında"]
+    btns = ["✏️Sipаriş ekipmanı hesaplama", " LED aydınlatma ", " Şirket hakkında"]
     for btn in btns:
         keyboard.add(btn)
     await state.finish()
@@ -1987,7 +2004,8 @@ async def voice_pitch(message: types.Message, state: FSMContext):
     await Form.voice.set()
     keyboard = ReplyKeyboardMarkup(
         resize_keyboard=True, one_time_keyboard=False)
-    buttons = ['Sipariş ekipmanı hesaplama', "Sokak aydınlatması ", " Endüstriyel aydınlatma ", " Ticari aydınlatma ", " Fito aydınlatma ", " Dönüş"]
+    buttons = ['✏️Sipariş ekipmanı hesaplama', "Sokak aydınlatması ", " Endüstriyel aydınlatma ", " Ticari aydınlatma ",
+               " Fito aydınlatma ", " Dönüş"]
     for button in buttons:
         keyboard.add(button)
     await bot.send_message(
@@ -2419,35 +2437,38 @@ async def wiki_request(message: types.Message):
 
 
 ################################################################################################################################################
-@dp.message_handler(state='*', text='Sipariş ekipmanı hesaplama')
+@dp.message_handler(state='*', text='✏️Sipariş ekipmanı hesaplama')
 async def voice_pitch(message: types.Message, state: FSMContext):
     keyboard = types.InlineKeyboardMarkup()
     url_button = types.InlineKeyboardButton(text="Bir danışmana yaz",
                                             url="https://t.me/ilnary")
     keyboard.add(url_button)
     await bot.send_message(message.chat.id, md.text(
-        md.text("", md.bold("güzel gün")),
-        md.text('Benim ismim ФИО'),
+        md.text("güzel gün"),
+        md.text('Benim ismim Ilnar'),
         md.text('Ekipman siparişi ile ilgili herhangi bir sorunuz varsa, lütfen benimle iletişime geçin!'),
         md.text('Sana yardım etmekten her zaman mutluluk duyarım'),
         sep='\n'
 
     ), reply_markup=keyboard),
 
-@dp.message_handler(state='*', text='Sipаriş ekipmanı hesaplama')
+
+@dp.message_handler(state='*', text='✏️Sipаriş ekipmanı hesaplama')
 async def voice_pitch(message: types.Message, state: FSMContext):
     keyboard = types.InlineKeyboardMarkup()
     url_button = types.InlineKeyboardButton(text="Bir danışmana yaz",
-                                            url="https://t.me/ilnary")
+                                            url="https://t.me/MaratZainashev")
     keyboard.add(url_button)
     await bot.send_message(message.chat.id, md.text(
-        md.text("", md.bold("güzel gün")),
-        md.text('Benim ismim ФИО'),
+        md.text("güzel gün"),
+        md.text('Benim ismim Marat'),
         md.text('Ekipman siparişi ile ilgili herhangi bir sorunuz varsa, lütfen benimle iletişime geçin!'),
         md.text('Sana yardım etmekten her zaman mutluluk duyarım'),
         sep='\n'
 
     ), reply_markup=keyboard),
+
+
 #######################################################################################################################################################
 @dp.message_handler(state='*', text='🇵🇱Polskie')
 async def start_cmd(message: types.Message):
@@ -2468,7 +2489,7 @@ async def start_cmd(message: types.Message):
     text = message.text.lower()
     keyboard = ReplyKeyboardMarkup(
         resize_keyboard=True, one_time_keyboard=False)
-    buttons = ['Wyposażenie pieczarkarni', 'Oświetlenie LED', 'O firmie']
+    buttons = ['Wyposażenie pieczarkarni', 'Oświetlenie ledowe', 'O firmie']
     for button in buttons:
         keyboard.add(button)
     await bot.send_message(
@@ -2493,7 +2514,8 @@ async def voice_pitch(message: types.Message, state: FSMContext):
     await Form.voice.set()
     keyboard = ReplyKeyboardMarkup(
         resize_keyboard=True, one_time_keyboard=False)
-    buttons = ["Aluminiowe stojaki do uprawy pieczarek", "Sprzęt do zbierania pieczarek",
+    buttons = ['✏️Zаmów kalkulację wyposażenia', "Aluminiowe stojaki do uprawy pieczarek",
+               "Sprzęt do zbierania pieczarek",
                "Wyposażenie dodatkowe", "Wstecz"]
     for button in buttons:
         keyboard.add(button)
@@ -2509,7 +2531,7 @@ async def voice_pitch(message: types.Message, state: FSMContext):
     )
 
 
-@dp.message_handler(state='*', text='Oświetlenie LED')
+@dp.message_handler(state='*', text='Oświetlenie ledowe')
 async def voice_pitch(message: types.Message, state: FSMContext):
     with open('userlog.txt', 'a') as file:  # Создается текстовый файл
         # в него записывается ID пользователя, его юзернейм и дата нажатия на кнопку START в боте.
@@ -2518,7 +2540,8 @@ async def voice_pitch(message: types.Message, state: FSMContext):
     await Form.voice.set()
     keyboard = ReplyKeyboardMarkup(
         resize_keyboard=True, one_time_keyboard=False)
-    buttons = ["Oświetlenie uliczne", "Oświetlenie przemysłowe", "Oświetlenie komercyjne", "Fito-oświetlenie", "Powrót"]
+    buttons = ['✏️Zamów kalkulację wyposażenia', "Oświetlenie uliczne", "Oświetlenie przemysłowe",
+               "Oświetlenie komercyjne", "Fito-oświetlenie", "Powrót"]
     for button in buttons:
         keyboard.add(button)
     await bot.send_message(
@@ -2564,7 +2587,8 @@ async def voice_pitch(message: types.Message, state: FSMContext):
     await Form.voice.set()
     keyboard = ReplyKeyboardMarkup(
         resize_keyboard=True, one_time_keyboard=False)
-    buttons = ["Aluminiowe stojaki do uprawy pieczarek", "Sprzęt do zbierania pieczarek",
+    buttons = ['✏️Zаmów kalkulację wyposażenia', "Aluminiowe stojaki do uprawy pieczarek",
+               "Sprzęt do zbierania pieczarek",
                "Wyposażenie dodatkowe", "Wstecz"]
     for button in buttons:
         keyboard.add(button)
@@ -2587,7 +2611,7 @@ async def cancel(message: types.Message, state: FSMContext):
         file.write(
             f'\n\nUser ID: {message.from_user.id}\n\nUsername: {message.from_user.username}\n\nDate visited: {message.date}\n----------------------')
     keyboard = ReplyKeyboardMarkup(resize_keyboard=True)
-    btns = ["Wyposażenie pieczarkarni", "Oświetlenie LED", "O firmie"]
+    btns = ["Wyposażenie pieczarkarni", "Oświetlenie ledowe", "O firmie"]
     for btn in btns:
         keyboard.add(btn)
     await state.finish()
@@ -2632,152 +2656,152 @@ async def default_test(message):
 async def default_test(message):
     await bot.send_message(
         message.chat.id,
-        'Тележка подвесная Standart для сбора шампиньонов',
+        'Wózek wiszący Standart do zbierania pieczarek',
     )
     file = open('Picking lorry Standart.jpg', 'rb')
     await bot.send_photo(message.chat.id, photo=file)
     file.close()
     keyboard = types.InlineKeyboardMarkup()
-    url_button = types.InlineKeyboardButton(text="Подробности на сайте!",
+    url_button = types.InlineKeyboardButton(text="Szczegóły na stronie!",
                                             url="https://www.green-al-mushroom.ru/catalog/tovar/telezhka-podvesnaya-st/")
     keyboard.add(url_button)
     await bot.send_message(message.chat.id, md.text(
-        md.text("Ширина_1 950 мм"),
-        md.text('Высота_3 130 мм'),
-        md.text('Глубина_610 мм'),
-        md.text('Вес_59 кг'),
-        md.text('Грузоподъемность_170 кг'),
+        md.text("Szerokość_1 950 mm"),
+        md.text('Wysokość_3 130 mm'),
+        md.text('Głębokość_610 mm'),
+        md.text('Waga_59 kg'),
+        md.text('Ładowność_170 kg'),
         sep='\n'
 
     ), reply_markup=keyboard),
     await bot.send_message(
         message.chat.id,
-        'Тележка напольная для сбора шампиньонов',
+        'Wózek podłogowy do zbierania pieczarek',
     )
     file = open('Picking trolley for lower beds.jpg', 'rb')
     await bot.send_photo(message.chat.id, photo=file)
     file.close()
     keyboard = types.InlineKeyboardMarkup()
-    url_button = types.InlineKeyboardButton(text="Перейти на сайт продукта",
+    url_button = types.InlineKeyboardButton(text="Szczegóły na stronie!",
                                             url="https://www.green-al-mushroom.ru/catalog/tovar/telezhka-napolnaya/")
     keyboard.add(url_button)
     await bot.send_message(message.chat.id, md.text(
-        md.text("Вес конструкции_15 кг"),
-        md.text('Грузоподъемность_150 кг'),
-        md.text('Материал сиденья_Пластик'),
+        md.text("Waga konstrukcji_15 kg"),
+        md.text('Ładowność_150 kg'),
+        md.text('Materiał siedziska_Plastik'),
         sep='\n'
 
     ), reply_markup=keyboard),
     await bot.send_message(
         message.chat.id,
-        'Платформа для сбора шампиньонов',
+        'Platforma do zbierania grzybów',
     )
     file = open('Picking platform for lower beds.jpg', 'rb')
     await bot.send_photo(message.chat.id, photo=file)
     file.close()
     keyboard = types.InlineKeyboardMarkup()
-    url_button = types.InlineKeyboardButton(text="Перейти на сайт продукта",
+    url_button = types.InlineKeyboardButton(text="Szczegóły na stronie!",
                                             url="https://www.green-al-mushroom.ru/catalog/tovar/platforma-dlya-sbora/")
     keyboard.add(url_button)
     await bot.send_message(message.chat.id, md.text(
-        md.text("Длина_1000 мм"),
-        md.text('Высота_1125 мм'),
-        md.text('Ширина_535 мм'),
-        md.text('Вес платформы_16 кг'),
-        md.text('Вес табурета_5 кг'),
-        md.text('Размер ячейки для весов_330*360 мм'),
-        md.text('Нагрузка на 1 ряд_10  кг'),
-        md.text('Количество рядов для размещения полок_4'),
+        md.text("Długość_1000 mm"),
+        md.text('Wysokość_1125 mm'),
+        md.text('Szerokość_535 mm'),
+        md.text('Waga platformy_16 kg'),
+        md.text('Waga stołka_5 kg'),
+        md.text('Rozmiar komórki dla wag_330 * 360 mm'),
+        md.text('Obciążenie dla 1 rzędu_10 kg'),
+        md.text('Liczba rzędów na półki_4'),
         sep='\n'
 
     ), reply_markup=keyboard),
 
 
-@dp.message_handler(state='*', text=['Дополнительное оборудование'])
+@dp.message_handler(state='*', text=['Wyposażenie dodatkowe'])
 async def default_test(message):
     await bot.send_message(
         message.chat.id,
-        'Стенд для зарядки весов',
+        'Podstawka do ładowania wagi',
     )
     file = open('Cart for charging scales.jpg', 'rb')
     await bot.send_photo(message.chat.id, photo=file)
     file.close()
     keyboard = types.InlineKeyboardMarkup()
-    url_button = types.InlineKeyboardButton(text="Подробности на сайте!",
+    url_button = types.InlineKeyboardButton(text="Szczegóły na stronie!",
                                             url="https://www.green-al-mushroom.ru/catalog/tovar/stend-dlya-zaryadki/")
     keyboard.add(url_button)
     await bot.send_message(message.chat.id, md.text(
-        md.text("Высота_1300 мм"),
-        md.text('Длина_1000 мм'),
-        md.text('Ширина_800 мм'),
-        md.text('Количество мест_20 шт'),
-        md.text('Размер ячейки для весов_330*360 мм'),
-        md.text('Вес конструкции_38 кг'),
-        md.text('Нагрузка на одну ячейку_25 кг'),
+        md.text("Wysokość_1300 mm"),
+        md.text('Długość_1000 mm'),
+        md.text('Szerokość_800 mm'),
+        md.text('Liczba miejsc_20 szt'),
+        md.text('Rozmiar komórki dla wag_330 * 360 mm'),
+        md.text('Masa konstrukcji_38 kg'),
+        md.text('Obciążenie na ogniwo_25 kg'),
         sep='\n'
     ), reply_markup=keyboard),
     await bot.send_message(
         message.chat.id,
-        'Стенд для зарядки весов с розетками',
+        'Podstawka do ładowania wagi z gniazdami',
     )
     file = open('Cart for charging scales with sockets.jpg', 'rb')
     await bot.send_photo(message.chat.id, photo=file)
     file.close()
     keyboard = types.InlineKeyboardMarkup()
-    url_button = types.InlineKeyboardButton(text="Перейти на сайт продукта",
+    url_button = types.InlineKeyboardButton(text="Szczegóły na stronie!",
                                             url="https://www.green-al-mushroom.ru/catalog/tovar/stend-dlya-zaryadki-s-rozetkami/")
     keyboard.add(url_button)
     await bot.send_message(message.chat.id, md.text(
-        md.text("Высота_1300 мм"),
-        md.text('Длина_1000 мм'),
-        md.text('Ширина_800 мм'),
-        md.text('Количество мест_20 шт'),
-        md.text('Размер ячейки для весов_330*360 мм'),
-        md.text('Вес конструкции_38 кг'),
-        md.text('Нагрузка на одну ячейку_25 кг'),
+        md.text("Wysokość_1300 mm"),
+        md.text('Długość_1000 mm'),
+        md.text('Szerokość_800 mm'),
+        md.text('Liczba miejsc_20 szt'),
+        md.text('Rozmiar komórki dla wag_330 * 360 mm'),
+        md.text('Masa konstrukcji_38 kg'),
+        md.text('Obciążenie na ogniwo_25 kg'),
         sep='\n'
     ), reply_markup=keyboard),
     await bot.send_message(
         message.chat.id,
-        'Сушилка для ведер',
+        'Suszarka do wiader',
     )
     file = open('Cart for drying buckets.jpg', 'rb')
     await bot.send_photo(message.chat.id, photo=file)
     file.close()
     keyboard = types.InlineKeyboardMarkup()
-    url_button = types.InlineKeyboardButton(text="Перейти на сайт продукта",
+    url_button = types.InlineKeyboardButton(text="Szczegóły na stronie!",
                                             url="https://www.green-al-mushroom.ru/catalog/tovar/sushilka/")
     keyboard.add(url_button)
     await bot.send_message(message.chat.id, md.text(
-        md.text("Длина_1 670 мм"),
-        md.text('Высота_1 624 мм'),
-        md.text('Ширина_620 мм'),
-        md.text('Вес конструкции_17 кг'),
-        md.text('Количество мест для ведер_20 шт'),
-        md.text('Грузоподъемность_120 кг'),
+        md.text("Długość_1 670 mm"),
+        md.text('Wysokość_1 624 mm'),
+        md.text('Szerokość_620 mm'),
+        md.text('Masa konstrukcji_17 kg'),
+        md.text('Ilość miejsc na wiadra_20 szt'),
+        md.text('Ładowność_120 kg'),
         sep='\n'
     ), reply_markup=keyboard),
 
 
-@dp.message_handler(state='*', text=['Назад'])
+@dp.message_handler(state='*', text=['Wstecz'])
 async def cancel(message: types.Message, state: FSMContext):
     with open('userlog.txt', 'a') as file:  # Создается текстовый файл
         # в него записывается ID пользователя, его юзернейм и дата нажатия на кнопку START в боте.
         file.write(
             f'\n\nUser ID: {message.from_user.id}\n\nUsername: {message.from_user.username}\n\nDate visited: {message.date}\n----------------------')
     keyboard = ReplyKeyboardMarkup(resize_keyboard=True)
-    btns = ['Оборудование для грибных ферм', 'LED светодиодное освещение', 'О компании']
+    btns = ['Wyposażenie pieczarkarni', 'Oświetlenie ledowe', 'O firmie']
     for btn in btns:
         keyboard.add(btn)
     await state.finish()
-    await bot.send_message(message.chat.id, 'Вы вернулсь назад ', reply_markup=keyboard)
+    await bot.send_message(message.chat.id, 'Wróciłeś ', reply_markup=keyboard)
 
 
 ########################################################################################################################
 
 ###############################---Блок для "LED светодиодное освещение"---##########################################################3
 
-@dp.message_handler(state='*', text='LED светодиодное освещение')
+@dp.message_handler(state='*', text='Oświetlenie ledowe')
 async def voice_pitch(message: types.Message, state: FSMContext):
     with open('userlog.txt', 'a') as file:  # Создается текстовый файл
         # в него записывается ID пользователя, его юзернейм и дата нажатия на кнопку START в боте.
@@ -2786,14 +2810,15 @@ async def voice_pitch(message: types.Message, state: FSMContext):
     await Form.voice.set()
     keyboard = ReplyKeyboardMarkup(
         resize_keyboard=True, one_time_keyboard=False)
-    buttons = ["Уличное освещение", "Промышленное освещение", "Торговое освещение", "Фито-освещение", "Возврат"]
+    buttons = ['✏️Zamów kalkulację wyposażenia', "Oświetlenie uliczne", "Oświetlenie przemysłowe",
+               "Oświetlenie komercyjne", "Fito-oświetlenie", "Powrót"]
     for button in buttons:
         keyboard.add(button)
     await bot.send_message(
         message.chat.id,
         md.text(
-            md.text("Добро пожаловать в раздел:", md.bold("LED светодиодное освещение")),
-            md.text("Выберите раздел который вам интересен!"),
+            md.text("Witamy w sekcji:", md.bold("Oświetlenie LED")),
+            md.text("Wybierz dział, który Cię interesuje!"),
             sep='\n'
         ),
         reply_markup=keyboard,
@@ -2801,14 +2826,14 @@ async def voice_pitch(message: types.Message, state: FSMContext):
     )
 
 
-@dp.message_handler(state='*', text=['Отмена'])
+@dp.message_handler(state='*', text=['Anulowanie'])
 async def cancel(message: types.Message, state: FSMContext):
     keyboard = ReplyKeyboardMarkup(resize_keyboard=True)
-    btns = ["Оборудование для грибных ферм", "LED светодиодное освещение", "О компании"]
+    btns = ["Wyposażenie pieczarkarni ", " Oświetlenie ledowe ", " O firmie"]
     for btn in btns:
         keyboard.add(btn)
     await state.finish()
-    await bot.send_message(message.chat.id, 'Ваше действие отменено', reply_markup=keyboard)
+    await bot.send_message(message.chat.id, 'Twoja akcja została anulowana', reply_markup=keyboard)
 
 
 #################################################################################################################
@@ -2816,7 +2841,7 @@ async def cancel(message: types.Message, state: FSMContext):
 #########################---Блок для "Green-al-light"---#####################################################################################
 
 
-@dp.message_handler(state='*', text=['Уличное освещение'])
+@dp.message_handler(state='*', text=['Oświetlenie uliczne'])
 async def default_test(message):
     await bot.send_message(
         message.chat.id,
@@ -2826,18 +2851,14 @@ async def default_test(message):
     await bot.send_photo(message.chat.id, photo=file)
     file.close()
     keyboard = types.InlineKeyboardMarkup()
-    url_button = types.InlineKeyboardButton(text="Подробности на сайте!",
-                                            url="https://www.green-al-light.ru/catalog/tovar/15/")
-    keyboard.add(url_button),
-    keyboard = types.InlineKeyboardMarkup()
-    url_button = types.InlineKeyboardButton(text="Подробности на сайте!",
+    url_button = types.InlineKeyboardButton(text="Szczegóły na stronie!",
                                             url="https://www.green-al-light.ru/catalog/tovar/15/")
     keyboard.add(url_button)
     await bot.send_message(message.chat.id, md.text(
-        md.text("Мощность______________30 Вт"),
-        md.text('Световой поток_________4373 Лм'),
-        md.text('Цвет. температура______5000 К'),
-        md.text('Степень защиты_________IP67'),
+        md.text("Moc ______________ 30 W"),
+        md.text('Strumień świetlny _________ 4373 Lm'),
+        md.text('Kol. temperatura ______ 5000 K'),
+        md.text('Stopień ochrony _________ IP67'),
         sep='\n'
     ), reply_markup=keyboard),
     await bot.send_message(
@@ -2848,14 +2869,14 @@ async def default_test(message):
     await bot.send_photo(message.chat.id, photo=file)
     file.close()
     keyboard = types.InlineKeyboardMarkup()
-    url_button = types.InlineKeyboardButton(text="Подробности на сайте!",
+    url_button = types.InlineKeyboardButton(text="Szczegóły na stronie!",
                                             url="https://www.green-al-light.ru/catalog/tovar/16/")
     keyboard.add(url_button)
     await bot.send_message(message.chat.id, md.text(
-        md.text("Мощность______________60 Вт"),
-        md.text('Световой поток_________8746 Лм'),
-        md.text('Цвет. температура______5000 К'),
-        md.text('Степень защиты_________IP67'),
+        md.text("Moc ______________ 60 W"),
+        md.text('Strumień świetlny _________ 8746 Lm'),
+        md.text('Kol. temperatura ______ 5000 K'),
+        md.text('Stopień ochrony _________ IP67'),
         sep='\n'
     ), reply_markup=keyboard),
     await bot.send_message(
@@ -2866,14 +2887,14 @@ async def default_test(message):
     await bot.send_photo(message.chat.id, photo=file)
     file.close()
     keyboard = types.InlineKeyboardMarkup()
-    url_button = types.InlineKeyboardButton(text="Подробности на сайте!",
+    url_button = types.InlineKeyboardButton(text="Szczegóły na stronie!",
                                             url="https://www.green-al-light.ru/catalog/tovar/36/")
     keyboard.add(url_button)
     await bot.send_message(message.chat.id, md.text(
-        md.text("Мощность______________50 Вт"),
-        md.text('Световой поток_________7896 Лм'),
-        md.text('Цвет. температура______5000 К'),
-        md.text('Степень защиты_________IP67'),
+        md.text("Stopień ochrony _________ IP67"),
+        md.text('Strumień świetlny _________ 7896 Lm'),
+        md.text('Kol. temperatura ______ 5000 K'),
+        md.text('Stopień ochrony _________ IP67'),
         sep='\n'
     ), reply_markup=keyboard),
     await bot.send_message(
@@ -2884,14 +2905,14 @@ async def default_test(message):
     await bot.send_photo(message.chat.id, photo=file)
     file.close()
     keyboard = types.InlineKeyboardMarkup()
-    url_button = types.InlineKeyboardButton(text="Подробности на сайте!",
+    url_button = types.InlineKeyboardButton(text="Szczegóły na stronie!",
                                             url="https://www.green-al-light.ru/catalog/tovar/32/")
     keyboard.add(url_button)
     await bot.send_message(message.chat.id, md.text(
-        md.text("Мощность______________100 Вт"),
-        md.text('Световой поток_________15792 Лм'),
-        md.text('Цвет. температура______5000 К'),
-        md.text('Степень защиты_________IP67'),
+        md.text("Moc ______________ 100 W"),
+        md.text('Strumień świetlny _________ 15792 Lm'),
+        md.text('Kol. temperatura ______ 5000 K'),
+        md.text('Stopień ochrony _________ IP67'),
         sep='\n'
     ), reply_markup=keyboard),
     await bot.send_message(
@@ -2902,14 +2923,14 @@ async def default_test(message):
     await bot.send_photo(message.chat.id, photo=file)
     file.close()
     keyboard = types.InlineKeyboardMarkup()
-    url_button = types.InlineKeyboardButton(text="Подробности на сайте!",
+    url_button = types.InlineKeyboardButton(text="Szczegóły na stronie!",
                                             url="https://www.green-al-light.ru/catalog/tovar/33/")
     keyboard.add(url_button)
     await bot.send_message(message.chat.id, md.text(
-        md.text("Мощность______________150 Вт"),
-        md.text('Световой поток_________23688 Лм'),
-        md.text('Цвет. температура______5000 К'),
-        md.text('Степень защиты_________IP67'),
+        md.text("Moc ______________ 150 W"),
+        md.text('Strumień świetlny _________ 23688 lm'),
+        md.text('Kol. temperatura ______ 5000 K'),
+        md.text('Stopień ochrony _________ IP67'),
         sep='\n'
     ), reply_markup=keyboard),
     await bot.send_message(
@@ -2920,14 +2941,14 @@ async def default_test(message):
     await bot.send_photo(message.chat.id, photo=file)
     file.close()
     keyboard = types.InlineKeyboardMarkup()
-    url_button = types.InlineKeyboardButton(text="Подробности на сайте!",
+    url_button = types.InlineKeyboardButton(text="Szczegóły na stronie!",
                                             url="https://www.green-al-light.ru/catalog/tovar/39/")
     keyboard.add(url_button)
     await bot.send_message(message.chat.id, md.text(
-        md.text("Мощность______________200 Вт"),
-        md.text('Световой поток_________31584 Лм'),
-        md.text('Цвет. температура______5000 К'),
-        md.text('Степень защиты_________IP67'),
+        md.text("Moc ______________ 200 W"),
+        md.text('Strumień świetlny _________ 31584 lm'),
+        md.text('Kol. temperatura ______ 5000 K'),
+        md.text('Stopień ochrony _________ IP67'),
         sep='\n'
     ), reply_markup=keyboard),
     await bot.send_message(
@@ -2938,33 +2959,33 @@ async def default_test(message):
     await bot.send_photo(message.chat.id, photo=file)
     file.close()
     keyboard = types.InlineKeyboardMarkup()
-    url_button = types.InlineKeyboardButton(text="Подробности на сайте!",
+    url_button = types.InlineKeyboardButton(text="Szczegóły na stronie!",
                                             url="https://www.green-al-light.ru/catalog/tovar/40/")
     keyboard.add(url_button)
     await bot.send_message(message.chat.id, md.text(
-        md.text("Мощность______________240 Вт"),
-        md.text('Световой поток_________39480 Лм'),
-        md.text('Цвет. температура______5000 К'),
-        md.text('Степень защиты_________IP67'),
+        md.text("Moc ______________ 240 W"),
+        md.text('Strumień świetlny _________ 39480 lm'),
+        md.text('Kol. temperatura ______ 5000 K'),
+        md.text('Stopień ochrony _________ IP67'),
         sep='\n'
     ), reply_markup=keyboard),
 
 
-@dp.message_handler(state='*', text=['Промышленное освещение'])
+@dp.message_handler(state='*', text=['Oświetlenie przemysłowe'])
 async def default_test(message):
     await bot.send_message(
         message.chat.id,
         'GreenAl-Prom A30',
     )
     keyboard = types.InlineKeyboardMarkup()
-    url_button = types.InlineKeyboardButton(text="Подробности на сайте!",
+    url_button = types.InlineKeyboardButton(text="Szczegóły na stronie!",
                                             url="https://www.green-al-light.ru/catalog/tovar/41/")
     keyboard.add(url_button)
     await bot.send_message(message.chat.id, md.text(
-        md.text("Мощность______________30 Вт"),
-        md.text('Световой поток_________39480 Лм'),
-        md.text('Цвет. температура______5000 К'),
-        md.text('Степень защиты_________IP67'),
+        md.text("Moc ______________ 30 W"),
+        md.text('Strumień świetlny _________ 39480 lm'),
+        md.text('Kol. temperatura ______ 5000 K'),
+        md.text('Stopień ochrony _________ IP67'),
         sep='\n'
     ), reply_markup=keyboard),
     await bot.send_message(
@@ -2972,14 +2993,14 @@ async def default_test(message):
         ' GreenAl-Prom A60',
     )
     keyboard = types.InlineKeyboardMarkup()
-    url_button = types.InlineKeyboardButton(text="Подробности на сайте!",
+    url_button = types.InlineKeyboardButton(text="Szczegóły na stronie!",
                                             url="https://www.green-al-light.ru/catalog/tovar/23/")
     keyboard.add(url_button)
     await bot.send_message(message.chat.id, md.text(
-        md.text("Мощность______________60 Вт"),
-        md.text('Световой поток_________8932 Лм'),
-        md.text('Цвет. температура______5000 К'),
-        md.text('Степень защиты_________IP67'),
+        md.text("Moc ______________ 60 W"),
+        md.text('Strumień świetlny _________ 8932 lm'),
+        md.text('Kol. temperatura ______ 5000 K'),
+        md.text('Stopień ochrony _________ IP67'),
         sep='\n'
     ), reply_markup=keyboard),
     await bot.send_message(
@@ -2987,14 +3008,14 @@ async def default_test(message):
         'GreenAl-Prom A90',
     )
     keyboard = types.InlineKeyboardMarkup()
-    url_button = types.InlineKeyboardButton(text="Подробности на сайте!",
+    url_button = types.InlineKeyboardButton(text="Szczegóły na stronie!",
                                             url="https://www.green-al-light.ru/catalog/tovar/24/")
     keyboard.add(url_button)
     await bot.send_message(message.chat.id, md.text(
-        md.text("Мощность______________90 Вт"),
-        md.text('Световой поток_________13398 Лм'),
-        md.text('Цвет. температура______5000 К'),
-        md.text('Степень защиты_________IP67'),
+        md.text("Moc ______________ 90 W"),
+        md.text('Strumień świetlny _________ 13398 lm'),
+        md.text('Kol. temperatura ______ 5000 K'),
+        md.text('Stopień ochrony _________ IP67'),
         sep='\n'
     ), reply_markup=keyboard),
     await bot.send_message(
@@ -3002,14 +3023,14 @@ async def default_test(message):
         'GreenAl-Prom А120',
     )
     keyboard = types.InlineKeyboardMarkup()
-    url_button = types.InlineKeyboardButton(text="Подробности на сайте!",
+    url_button = types.InlineKeyboardButton(text="Szczegóły na stronie!",
                                             url="https://www.green-al-light.ru/catalog/tovar/42/")
     keyboard.add(url_button)
     await bot.send_message(message.chat.id, md.text(
-        md.text("Мощность______________120 Вт"),
-        md.text('Световой поток_________17864 Лм'),
-        md.text('Цвет. температура______5000 К'),
-        md.text('Степень защиты_________IP67'),
+        md.text("Moc ______________ 120 W"),
+        md.text('Strumień świetlny _________ 17864 Lm'),
+        md.text('Kol. temperatura ______ 5000 K'),
+        md.text('Stopień ochrony _________ IP67'),
         sep='\n'
     ), reply_markup=keyboard),
     await bot.send_message(
@@ -3017,14 +3038,14 @@ async def default_test(message):
         'GreenAl-Prom A150',
     )
     keyboard = types.InlineKeyboardMarkup()
-    url_button = types.InlineKeyboardButton(text="Подробности на сайте!",
+    url_button = types.InlineKeyboardButton(text="Szczegóły na stronie!",
                                             url="https://www.green-al-light.ru/catalog/tovar/47/")
     keyboard.add(url_button)
     await bot.send_message(message.chat.id, md.text(
-        md.text("Мощность______________150 Вт"),
-        md.text('Световой поток_________22330 Лм'),
-        md.text('Цвет. температура______5000 К'),
-        md.text('Степень защиты_________IP67'),
+        md.text("Moc ______________ 150 W"),
+        md.text('Strumień świetlny _________ 22330 lm'),
+        md.text('Kol. temperatura ______ 5000 K'),
+        md.text('Stopień ochrony _________ IP67'),
         sep='\n'
     ), reply_markup=keyboard),
     await bot.send_message(
@@ -3035,14 +3056,14 @@ async def default_test(message):
     await bot.send_photo(message.chat.id, photo=file)
     file.close()
     keyboard = types.InlineKeyboardMarkup()
-    url_button = types.InlineKeyboardButton(text="Подробности на сайте!",
+    url_button = types.InlineKeyboardButton(text="Szczegóły na stronie!",
                                             url="https://www.green-al-light.ru/catalog/tovar/48/")
     keyboard.add(url_button)
     await bot.send_message(message.chat.id, md.text(
-        md.text("Мощность______________50 Вт"),
-        md.text('Световой поток_________7896 Лм'),
-        md.text('Цвет. температура______5000 К'),
-        md.text('Степень защиты_________IP67'),
+        md.text("Moc ______________ 50 W"),
+        md.text('Strumień świetlny _________ 7896 Lm'),
+        md.text('Kol. temperatura ______ 5000 K'),
+        md.text('Stopień ochrony _________ IP67'),
         sep='\n'
     ), reply_markup=keyboard),
     await bot.send_message(
@@ -3053,14 +3074,14 @@ async def default_test(message):
     await bot.send_photo(message.chat.id, photo=file)
     file.close()
     keyboard = types.InlineKeyboardMarkup()
-    url_button = types.InlineKeyboardButton(text="Подробности на сайте!",
+    url_button = types.InlineKeyboardButton(text="Szczegóły na stronie!",
                                             url="https://www.green-al-light.ru/catalog/tovar/43/")
     keyboard.add(url_button)
     await bot.send_message(message.chat.id, md.text(
-        md.text("Мощность______________100 Вт"),
-        md.text('Световой поток_________15792 Лм'),
-        md.text('Цвет. температура______5000 К'),
-        md.text('Степень защиты_________IP67'),
+        md.text("Moc ______________ 100 W"),
+        md.text('Strumień świetlny _________ 15792 Lm'),
+        md.text('Kol. temperatura ______ 5000 K'),
+        md.text('Stopień ochrony _________ IP67'),
         sep='\n'
     ), reply_markup=keyboard),
     await bot.send_message(
@@ -3071,14 +3092,14 @@ async def default_test(message):
     await bot.send_photo(message.chat.id, photo=file)
     file.close()
     keyboard = types.InlineKeyboardMarkup()
-    url_button = types.InlineKeyboardButton(text="Подробности на сайте!",
+    url_button = types.InlineKeyboardButton(text="Szczegóły na stronie!",
                                             url="https://www.green-al-light.ru/catalog/tovar/44/")
     keyboard.add(url_button)
     await bot.send_message(message.chat.id, md.text(
-        md.text("Мощность______________150 Вт"),
-        md.text('Световой поток_________23688 Лм'),
-        md.text('Цвет. температура______5000 К'),
-        md.text('Степень защиты_________IP67'),
+        md.text("Moc ______________ 150 W"),
+        md.text('Strumień świetlny _________ 23688 lm'),
+        md.text('Kol. temperatura ______ 5000 K'),
+        md.text('Stopień ochrony _________ IP67'),
         sep='\n'
     ), reply_markup=keyboard),
     await bot.send_message(
@@ -3089,14 +3110,14 @@ async def default_test(message):
     await bot.send_photo(message.chat.id, photo=file)
     file.close()
     keyboard = types.InlineKeyboardMarkup()
-    url_button = types.InlineKeyboardButton(text="Подробности на сайте!",
+    url_button = types.InlineKeyboardButton(text="Szczegóły na stronie!",
                                             url="https://www.green-al-light.ru/catalog/tovar/45/")
     keyboard.add(url_button)
     await bot.send_message(message.chat.id, md.text(
-        md.text("Мощность______________200 Вт"),
-        md.text('Световой поток_________31584 Лм'),
-        md.text('Цвет. температура______5000 К'),
-        md.text('Степень защиты_________IP67'),
+        md.text("Moc ______________ 200 W"),
+        md.text('Strumień świetlny _________ 31584 lm'),
+        md.text('Kol. temperatura ______ 5000 K'),
+        md.text('Stopień ochrony _________ IP67'),
         sep='\n'
     ), reply_markup=keyboard),
     await bot.send_message(
@@ -3107,34 +3128,34 @@ async def default_test(message):
     await bot.send_photo(message.chat.id, photo=file)
     file.close()
     keyboard = types.InlineKeyboardMarkup()
-    url_button = types.InlineKeyboardButton(text="Подробности на сайте!",
+    url_button = types.InlineKeyboardButton(text="Szczegóły na stronie!",
                                             url="https://www.green-al-light.ru/catalog/tovar/46/")
     keyboard.add(url_button)
     await bot.send_message(message.chat.id, md.text(
-        md.text("Мощность______________240 Вт"),
-        md.text('Световой поток_________36480 Лм'),
-        md.text('Цвет. температура______5000 К'),
-        md.text('Степень защиты_________IP67'),
+        md.text("Moc ______________ 240 W"),
+        md.text('Strumień świetlny _________ 36480 lm'),
+        md.text('Kol. temperatura ______ 5000 K'),
+        md.text('Stopień ochrony _________ IP67'),
         sep='\n'
 
     ), reply_markup=keyboard),
 
 
-@dp.message_handler(state='*', text=['Торговое освещение'])
+@dp.message_handler(state='*', text=['Oświetlenie komercyjne'])
 async def default_test(message):
     await bot.send_message(
         message.chat.id,
         'GreenAl-Trade Line 10',
     )
     keyboard = types.InlineKeyboardMarkup()
-    url_button = types.InlineKeyboardButton(text="Перейти на сайт продукта",
+    url_button = types.InlineKeyboardButton(text="Szczegóły na stronie!",
                                             url="https://www.green-al-light.ru/catalog/tovar/25/")
     keyboard.add(url_button)
     await bot.send_message(message.chat.id, md.text(
-        md.text("Мощность______________10 Вт"),
-        md.text('Световой поток_________1500 Лм'),
-        md.text('Цвет. температура______5000 К'),
-        md.text('Степень защиты_________IP67'),
+        md.text("Moc ______________ 10 W"),
+        md.text('Strumień świetlny _________ 1500 lm'),
+        md.text('Kol. temperatura ______ 5000 K'),
+        md.text('Stopień ochrony _________ IP67'),
         sep='\n'
     ), reply_markup=keyboard),
     await bot.send_message(
@@ -3142,32 +3163,32 @@ async def default_test(message):
         'GreenAl-Trade Line 20',
     )
     keyboard = types.InlineKeyboardMarkup()
-    url_button = types.InlineKeyboardButton(text="Перейти на сайт продукта",
+    url_button = types.InlineKeyboardButton(text="Szczegóły na stronie!",
                                             url="https://www.green-al-light.ru/catalog/tovar/26/")
     keyboard.add(url_button)
     await bot.send_message(message.chat.id, md.text(
-        md.text("Мощность______________20 Вт"),
-        md.text('Световой поток_________3000 Лм'),
-        md.text('Цвет. температура______5000 К'),
-        md.text('Степень защиты_________IP67'),
+        md.text("Moc ______________ 20 W"),
+        md.text('Strumień świetlny _________ 3000 lm'),
+        md.text('Kol. temperatura ______ 5000 K'),
+        md.text('Stopień ochrony _________ IP67'),
         sep='\n'
 
     ), reply_markup=keyboard),
 
 
-@dp.message_handler(state='*', text=['Фито-освещение'])
+@dp.message_handler(state='*', text=['Fito-oświetlenie'])
 async def default_test(message):
     await bot.send_message(
         message.chat.id,
         'GreenAl-Phyto 30',
     )
     keyboard = types.InlineKeyboardMarkup()
-    url_button = types.InlineKeyboardButton(text="Перейти на сайт продукта",
+    url_button = types.InlineKeyboardButton(text="Szczegóły na stronie!",
                                             url="https://www.green-al-light.ru/catalog/tovar/27/")
     keyboard.add(url_button)
     await bot.send_message(message.chat.id, md.text(
-        md.text("Мощность______________30 Вт"),
-        md.text('Степень защиты_________IP67'),
+        md.text("Moc ______________ 30 W"),
+        md.text('Stopień ochrony _________ IP67'),
         sep='\n'
     ), reply_markup=keyboard),
     await bot.send_message(
@@ -3175,77 +3196,2448 @@ async def default_test(message):
         'GreenAl-Phyto 60',
     )
     keyboard = types.InlineKeyboardMarkup()
-    url_button = types.InlineKeyboardButton(text="Перейти на сайт продукта",
+    url_button = types.InlineKeyboardButton(text="Szczegóły na stronie!",
                                             url="https://www.green-al-light.ru/catalog/tovar/28/")
     keyboard.add(url_button)
     await bot.send_message(message.chat.id, md.text(
-        md.text("Мощность______________60 Вт"),
-        md.text('Степень защиты_________IP67'),
+        md.text("Moc ______________ 60 W"),
+        md.text('Stopień ochrony _________ IP67'),
         sep='\n'
 
     ), reply_markup=keyboard),
 
 
-@dp.message_handler(state='*', text=['Возврат'])
+@dp.message_handler(state='*', text=['Powrót'])
 async def cancel(message: types.Message, state: FSMContext):
     keyboard = ReplyKeyboardMarkup(resize_keyboard=True)
-    btns = ['Оборудование для грибных ферм', 'LED светодиодное освещение', 'О компании']
+    btns = ['Wyposażenie pieczarkarni', 'Oświetlenie LED', 'O firmie']
     for btn in btns:
         keyboard.add(btn)
     await state.finish()
-    await bot.send_message(message.chat.id, 'Вы вернулсь назад ', reply_markup=keyboard)
+    await bot.send_message(message.chat.id, 'Wróciłeś ', reply_markup=keyboard)
 
 
 #####################################################################################################################
 
 ########################################---Блок для "О компнии"---#########################################################################################################
 
-@dp.message_handler(state='*', text=['О компании'])
+@dp.message_handler(state='*', text=['O firmie'])
 async def wiki_request(message: types.Message):
     await Form.wiki.set()
     await bot.send_message(
         message.chat.id,
         md.text(
-            md.text("«ООО «ГринАл» GreenAl изготавливает продукцию:"),
-            md.text('- Оборудование для грибных ферм;'),
-            md.text('- Промышленные тепличные комплексы;'),
-            md.text('- Промышленные светодиодные светильники;'),
-            md.text('- Комплектующие для солнечной энергетики;'),
+            md.text("«GreenAl» LLC GreenAl produkuje:"),
+            md.text('- Sprzęt do pieczarkarni;'),
+            md.text('- Przemysłowe kompleksy szklarniowe;'),
+            md.text('- Oprawy przemysłowe LED;'),
+            md.text('- Komponenty do energii słonecznej;'),
             sep='\n'
 
         ),
     )
+
+
 ################################################################################################################################################
-@dp.message_handler(state='*', text='Sipariş ekipmanı hesaplama')
+@dp.message_handler(state='*', text='✏️Zamów kalkulację wyposażenia')
 async def voice_pitch(message: types.Message, state: FSMContext):
     keyboard = types.InlineKeyboardMarkup()
     url_button = types.InlineKeyboardButton(text="Bir danışmana yaz",
                                             url="https://t.me/ilnary")
     keyboard.add(url_button)
     await bot.send_message(message.chat.id, md.text(
-        md.text("", md.bold("güzel gün")),
-        md.text('Benim ismim ФИО'),
+        md.text("Güzel gün"),
+        md.text('Benim ismim Ilnar'),
         md.text('Ekipman siparişi ile ilgili herhangi bir sorunuz varsa, lütfen benimle iletişime geçin!'),
         md.text('Sana yardım etmekten her zaman mutluluk duyarım'),
         sep='\n'
 
     ), reply_markup=keyboard),
 
-@dp.message_handler(state='*', text='Sipаriş ekipmanı hesaplama')
+
+@dp.message_handler(state='*', text='✏️Zаmów kalkulację wyposażenia')
 async def voice_pitch(message: types.Message, state: FSMContext):
     keyboard = types.InlineKeyboardMarkup()
     url_button = types.InlineKeyboardButton(text="Bir danışmana yaz",
-                                            url="https://t.me/ilnary")
+                                            url="https://t.me/MaratZainashev")
     keyboard.add(url_button)
     await bot.send_message(message.chat.id, md.text(
-        md.text("", md.bold("güzel gün")),
-        md.text('Benim ismim ФИО'),
+        md.text("Güzel gün"),
+        md.text('Benim ismim Marat'),
         md.text('Ekipman siparişi ile ilgili herhangi bir sorunuz varsa, lütfen benimle iletişime geçin!'),
         md.text('Sana yardım etmekten her zaman mutluluk duyarım'),
         sep='\n'
 
     ), reply_markup=keyboard),
+
 
 ##################################################################################################################################################
+
+###############################################################################################################################################################
+
+@dp.message_handler(state='*', text='🇩🇪Deutsch')
+async def start_cmd(message: types.Message):
+    global keyboard
+    await bot.send_message(
+        message.chat.id,
+        md.text(
+            md.text("Ausgewählte Sprache:", md.bold("Deutsch")),
+            sep='\n'
+        ),
+        parse_mode=ParseMode.MARKDOWN,
+    )
+    chatId = message.chat.id
+    text = message.text.lower()
+    keyboard = ReplyKeyboardMarkup(
+        resize_keyboard=True, one_time_keyboard=False)
+    buttons = ['Ausrüstung für Pilzfarmen ', ' LED-Beleuchtung ', ' Über das Unternehmen']
+    for button in buttons:
+        keyboard.add(button)
+    await bot.send_message(
+        message.chat.id,
+        md.text(
+            md.text("Hallo ich bin -", md.bold("Green Al bot")),
+            md.text('Ich helfe Ihnen gerne weiter!'),
+            md.text('Verwenden Sie Ihre Tastatur, um loszulegen!'),
+            sep='\n'
+        ),
+        reply_markup=keyboard,
+        parse_mode=ParseMode.MARKDOWN,
+    )
+
+
+@dp.message_handler(state='*', text='Ausrüstung für Pilzfarmen')
+async def voice_pitch(message: types.Message, state: FSMContext):
+    await Form.voice.set()
+    keyboard = ReplyKeyboardMarkup(
+        resize_keyboard=True, one_time_keyboard=False)
+    buttons = ["✏️ Bеstellen Sie eine Berechnung der Ausrüstung",
+               "Aluminiumregale für den Anbau von Pilzen, Champignons", "Ausrüstung zum Sammeln von Chappignons",
+               "Zusatzausrüstung", "Zurück"]
+    for button in buttons:
+        keyboard.add(button)
+    await bot.send_message(
+        message.chat.id,
+        md.text(
+            md.text("Willkommen in der Sektion:", md.bold("Ausrüstung für Pilzfarmen")),
+            md.text("Wählen Sie den Bereich, der Sie interessiert!"),
+            sep='\n'
+        ),
+        reply_markup=keyboard,
+        parse_mode=ParseMode.MARKDOWN,
+    )
+
+
+@dp.message_handler(state='*', text='LED-Beleuchtung')
+async def voice_pitch(message: types.Message, state: FSMContext):
+    await Form.voice.set()
+    keyboard = ReplyKeyboardMarkup(
+        resize_keyboard=True, one_time_keyboard=False)
+    buttons = ['✏️Bestellgeräteberechnung ', "Straßenbeleuchtung", "Industriebeleuchtung", "Gewerbliche Beleuchtung",
+               "Phyto-Beleuchtung", "Rückkehr"]
+    for button in buttons:
+        keyboard.add(button)
+    await bot.send_message(
+        message.chat.id,
+        md.text(
+            md.text("Willkommen in der Sektion:", md.bold("LED-Beleuchtung")),
+            md.text("Wählen Sie den Bereich, der Sie interessiert!"),
+            sep='\n'
+        ),
+        reply_markup=keyboard,
+        parse_mode=ParseMode.MARKDOWN,
+    )
+
+    @dp.message_handler(state='*', text=['Über das Unternehmen'])
+    async def wiki_request(message: types.Message):
+        await Form.wiki.set()
+        await bot.send_message(
+            message.chat.id,
+            md.text(
+                md.text("«GreenAl» LLC GreenAl stellt Produkte her:"),
+                md.text('- Ausrüstung für Pilzfarmen;'),
+                md.text('- Industrielle Gewächshauskomplexe;'),
+                md.text('- Industrielle LED-Leuchten;'),
+                md.text('- Komponenten für Solarenergie;'),
+                sep='\n'
+
+            ),
+        )
+
+
+####################################---Блок для "Оборудывание для грибных ферм"--- #####################################################################################
+
+@dp.message_handler(state='*', text='Ausrüstung für Pilzfarmen')
+async def voice_pitch(message: types.Message, state: FSMContext):
+    await Form.voice.set()
+    keyboard = ReplyKeyboardMarkup(
+        resize_keyboard=True, one_time_keyboard=False)
+    buttons = ["✏️ Bеstellen Sie eine Berechnung der Ausrüstung",
+               "Aluminiumregale für den Anbau von Pilzen, Champignons", "Ausrüstung zum Sammeln von Chappignons",
+               "Zusatzausrüstung", "Zurück"]
+    for button in buttons:
+        keyboard.add(button)
+    await bot.send_message(
+        message.chat.id,
+        md.text(
+            md.text("Willkommen in der Sektion:", md.bold("Ausrüstung für Pilzfarmen")),
+            md.text("Wählen Sie den Bereich, der Sie interessiert!"),
+            sep='\n'
+        ),
+        reply_markup=keyboard,
+        parse_mode=ParseMode.MARKDOWN,
+    )
+
+
+@dp.message_handler(state='*', text=['Zurück'])
+async def cancel(message: types.Message, state: FSMContext):
+    with open('userlog.txt', 'a') as file:  # Создается текстовый файл
+        # в него записывается ID пользователя, его юзернейм и дата нажатия на кнопку START в боте.
+        file.write(
+            f'\n\nUser ID: {message.from_user.id}\n\nUsername: {message.from_user.username}\n\nDate visited: {message.date}\n----------------------')
+    keyboard = ReplyKeyboardMarkup(resize_keyboard=True)
+    btns = ["Ausrüstung für Pilzfarmen", " LED-Beleuchtung", " Über das Unternehmen"]
+    for btn in btns:
+        keyboard.add(btn)
+    await state.finish()
+    await bot.send_message(message.chat.id, 'Ihre Aktion wird abgebrochen', reply_markup=keyboard)
+
+
+#####################################################################################################################
+
+#######################################----Блок для "Green-al-mushroom"----###########################################################################
+
+
+@dp.message_handler(state='*', text=['Aluminiumregale für den Anbau von Pilzen, Champignons'])
+async def default_test(message):
+    await bot.send_message(
+        message.chat.id,
+        'Aluminiumregale für den Anbau von Pilzen, Champignons',
+    )
+    file = open('Shelvings for mushroom growing.jpg', 'rb')
+    await bot.send_photo(message.chat.id, photo=file)
+    file.close()
+    keyboard = types.InlineKeyboardMarkup()
+    url_button = types.InlineKeyboardButton(text="Details auf der Seite!",
+                                            url="https://www.green-al-mushroom.ru/catalog/tovar/stellazh-6-yarusnyy/")
+    keyboard.add(url_button)
+    await bot.send_message(message.chat.id, md.text(
+        md.text("Gestelllänge_30,0 m (Standard)"),
+        md.text('Breite (innen) _ 1,34 m (Standard)'),
+        md.text('Breite (außen) _ 1,5 m (Standard)'),
+        md.text('Rackhöhe_von 2,8 bis 5,0 m'),
+        md.text('Rackhöhe_von 2,8 bis 5,0 m'),
+        md.text('Stützsäulenabstand_1,5 / 3 m'),
+        md.text('Deckhöhe (Regalhöhe) _600 mm'),
+        md.text('Seitenplattenhöhe_180 mm'),
+        md.text('Gewicht const. Rack_1 900 kg'),
+        md.text('Auslegungslast_195 kg / m2'),
+        sep='\n'
+
+    ), reply_markup=keyboard),
+
+
+@dp.message_handler(state='*', text=['Ausrüstung zum Sammeln von Chappignons'])
+async def default_test(message):
+    await bot.send_message(
+        message.chat.id,
+        'Hängender Wagen Standart zum Sammeln von Champignons',
+    )
+    file = open('Picking lorry Standart.jpg', 'rb')
+    await bot.send_photo(message.chat.id, photo=file)
+    file.close()
+    keyboard = types.InlineKeyboardMarkup()
+    url_button = types.InlineKeyboardButton(text="Details auf der Seite!",
+                                            url="https://www.green-al-mushroom.ru/catalog/tovar/telezhka-podvesnaya-st/")
+    keyboard.add(url_button)
+    await bot.send_message(message.chat.id, md.text(
+        md.text("Breite_1 950 mm"),
+        md.text('Höhe_3 130 mm'),
+        md.text('Tiefe_610 mm'),
+        md.text('Gewicht_59 kg'),
+        md.text('Tragfähigkeit_170 kg'),
+        sep='\n'
+
+    ), reply_markup=keyboard),
+    await bot.send_message(
+        message.chat.id,
+        'Bodenwagen zum Sammeln von Champignons',
+    )
+    file = open('Picking trolley for lower beds.jpg', 'rb')
+    await bot.send_photo(message.chat.id, photo=file)
+    file.close()
+    keyboard = types.InlineKeyboardMarkup()
+    url_button = types.InlineKeyboardButton(text="Details auf der Seite!",
+                                            url="https://www.green-al-mushroom.ru/catalog/tovar/telezhka-napolnaya/")
+    keyboard.add(url_button)
+    await bot.send_message(message.chat.id, md.text(
+        md.text("Strukturgewicht_15 kg"),
+        md.text('Tragfähigkeit_150 kg'),
+        md.text('Sitzmaterial_Kunststoff'),
+        sep='\n'
+
+    ), reply_markup=keyboard),
+    await bot.send_message(
+        message.chat.id,
+        'Pilzpflückplattform',
+    )
+    file = open('Picking platform for lower beds.jpg', 'rb')
+    await bot.send_photo(message.chat.id, photo=file)
+    file.close()
+    keyboard = types.InlineKeyboardMarkup()
+    url_button = types.InlineKeyboardButton(text="Details auf der Seite!",
+                                            url="https://www.green-al-mushroom.ru/catalog/tovar/platforma-dlya-sbora/")
+    keyboard.add(url_button)
+    await bot.send_message(message.chat.id, md.text(
+        md.text("Länge_1000 mm"),
+        md.text('Höhe_1125 mm'),
+        md.text('Breite_535 mm'),
+        md.text('Plattformgewicht_16 kg'),
+        md.text('Stuhlgewicht_5 kg'),
+        md.text('Zellengröße für Waage_330 * 360 mm'),
+        md.text('Last für 1 Reihe_10 kg'),
+        md.text('Anzahl der Reihen für Regale_4'),
+        sep='\n'
+
+    ), reply_markup=keyboard),
+
+
+@dp.message_handler(state='*', text=['Zusatzausrüstung'])
+async def default_test(message):
+    await bot.send_message(
+        message.chat.id,
+        'Ladestation skalieren',
+    )
+    file = open('Cart for charging scales.jpg', 'rb')
+    await bot.send_photo(message.chat.id, photo=file)
+    file.close()
+    keyboard = types.InlineKeyboardMarkup()
+    url_button = types.InlineKeyboardButton(text="Details auf der Seite!",
+                                            url="https://www.green-al-mushroom.ru/catalog/tovar/stend-dlya-zaryadki/")
+    keyboard.add(url_button)
+    await bot.send_message(message.chat.id, md.text(
+        md.text("Höhe_1300 mm"),
+        md.text('Länge_1000 mm'),
+        md.text('Breite_800 mm'),
+        md.text('Anzahl der Sitze_20 Stk'),
+        md.text('Zellengröße für Waage_330 * 360 mm'),
+        md.text('Baugewicht_38 kg'),
+        md.text('Belastung pro Zelle_25 kg'),
+        sep='\n'
+    ), reply_markup=keyboard),
+    await bot.send_message(
+        message.chat.id,
+        'Waage Ladestation mit Steckdosen',
+    )
+    file = open('Cart for charging scales with sockets.jpg', 'rb')
+    await bot.send_photo(message.chat.id, photo=file)
+    file.close()
+    keyboard = types.InlineKeyboardMarkup()
+    url_button = types.InlineKeyboardButton(text="Details auf der Seite!",
+                                            url="https://www.green-al-mushroom.ru/catalog/tovar/stend-dlya-zaryadki-s-rozetkami/")
+    keyboard.add(url_button)
+    await bot.send_message(message.chat.id, md.text(
+        md.text("Höhe_1300 mm"),
+        md.text('Länge_1000 mm'),
+        md.text('Breite_800 mm'),
+        md.text('Anzahl der Sitze_20 Stk'),
+        md.text('Zellengröße für Waage_330 * 360 mm'),
+        md.text('Baugewicht_38 kg'),
+        md.text('Belastung pro Zelle_25 kg'),
+        sep='\n'
+    ), reply_markup=keyboard),
+    await bot.send_message(
+        message.chat.id,
+        'Trockner für Eimer',
+    )
+    file = open('Cart for drying buckets.jpg', 'rb')
+    await bot.send_photo(message.chat.id, photo=file)
+    file.close()
+    keyboard = types.InlineKeyboardMarkup()
+    url_button = types.InlineKeyboardButton(text="Details auf der Seite!",
+                                            url="https://www.green-al-mushroom.ru/catalog/tovar/sushilka/")
+    keyboard.add(url_button)
+    await bot.send_message(message.chat.id, md.text(
+        md.text("Länge_1 670 mm"),
+        md.text('Höhe_1 624 mm'),
+        md.text('Breite_620 mm'),
+        md.text('Baugewicht_17 kg'),
+        md.text('Anzahl der Plätze für Eimer_20 Stk'),
+        md.text('Tragfähigkeit_120 kg'),
+        sep='\n'
+    ), reply_markup=keyboard),
+
+
+@dp.message_handler(state='*', text=['Zurück'])
+async def cancel(message: types.Message, state: FSMContext):
+    with open('userlog.txt', 'a') as file:  # Создается текстовый файл
+        # в него записывается ID пользователя, его юзернейм и дата нажатия на кнопку START в боте.
+        file.write(
+            f'\n\nUser ID: {message.from_user.id}\n\nUsername: {message.from_user.username}\n\nDate visited: {message.date}\n----------------------')
+    keyboard = ReplyKeyboardMarkup(resize_keyboard=True)
+    btns = ["Ausrüstung für Pilzfarmen ',' LED-Beleuchtung ',' Über das Unternehmen"]
+    for btn in btns:
+        keyboard.add(btn)
+    await state.finish()
+    await bot.send_message(message.chat.id, 'Ihre Aktion wird abgebrochen', reply_markup=keyboard)
+
+
+########################################################################################################################
+
+###############################---Блок для "LED светодиодное освещение"---##########################################################3
+
+@dp.message_handler(state='*', text='LED-Beleuchtung')
+async def voice_pitch(message: types.Message, state: FSMContext):
+    with open('userlog.txt', 'a') as file:  # Создается текстовый файл
+        # в него записывается ID пользователя, его юзернейм и дата нажатия на кнопку START в боте.
+        file.write(
+            f'\n\nUser ID: {message.from_user.id}\n\nUsername: {message.from_user.username}\n\nDate visited: {message.date}\n----------------------')
+    await Form.voice.set()
+    keyboard = ReplyKeyboardMarkup(
+        resize_keyboard=True, one_time_keyboard=False)
+    buttons = ['✏️Bestellgeräteberechnung ', "Straßenbeleuchtung", "Industriebeleuchtung", "Gewerbliche Beleuchtung",
+               "Phyto-Beleuchtung", "Rückkehr"]
+    for button in buttons:
+        keyboard.add(button)
+    await bot.send_message(
+        message.chat.id,
+        md.text(
+            md.text("Willkommen in der Sektion:", md.bold("LED-Beleuchtung")),
+            md.text("Wählen Sie den Bereich, der Sie interessiert!"),
+            sep='\n'
+        ),
+        reply_markup=keyboard,
+        parse_mode=ParseMode.MARKDOWN,
+    )
+
+
+@dp.message_handler(state='*', text=['Rückkehr'])
+async def cancel(message: types.Message, state: FSMContext):
+    with open('userlog.txt', 'a') as file:  # Создается текстовый файл
+        # в него записывается ID пользователя, его юзернейм и дата нажатия на кнопку START в боте.
+        file.write(
+            f'\n\nUser ID: {message.from_user.id}\n\nUsername: {message.from_user.username}\n\nDate visited: {message.date}\n----------------------')
+    keyboard = ReplyKeyboardMarkup(resize_keyboard=True)
+    btns = ["Ausrüstung für Pilzfarmen ", " LED-Beleuchtung ", "Über das Unternehmen"]
+    for btn in btns:
+        keyboard.add(btn)
+    await state.finish()
+    await bot.send_message(message.chat.id, 'Ihre Aktion wird abgebrochen', reply_markup=keyboard)
+
+
+#################################################################################################################
+
+#########################---Блок для "Green-al-light"---#####################################################################################
+
+
+@dp.message_handler(state='*', text=['Straßenbeleuchtung'])
+async def default_test(message):
+    await bot.send_message(
+        message.chat.id,
+        'Green-Al-StreetA30',
+    )
+    file = open('GreenAlStreetA30.jpg', 'rb')
+    await bot.send_photo(message.chat.id, photo=file)
+    file.close()
+    keyboard = types.InlineKeyboardMarkup()
+    url_button = types.InlineKeyboardButton(text="Details auf der Seite!",
+                                            url="https://www.green-al-light.ru/catalog/tovar/15/")
+    keyboard.add(url_button)
+    await bot.send_message(message.chat.id, md.text(
+        md.text("Leistung ______________ 30 W"),
+        md.text('Lichtstrom _________ 4373 lm'),
+        md.text('Far. Temperatur ______ 5000 K'),
+        md.text('Schutzart _________ IP67'),
+        sep='\n'
+    ), reply_markup=keyboard),
+    await bot.send_message(
+        message.chat.id,
+        'Green-Al-StreetA60',
+    )
+    file = open('GreenAlStreetA60.jpg', 'rb')
+    await bot.send_photo(message.chat.id, photo=file)
+    file.close()
+    keyboard = types.InlineKeyboardMarkup()
+    url_button = types.InlineKeyboardButton(text="Details auf der Seite!",
+                                            url="https://www.green-al-light.ru/catalog/tovar/16/")
+    keyboard.add(url_button)
+    await bot.send_message(message.chat.id, md.text(
+        md.text("Leistung ______________ 60 W"),
+        md.text('Lichtstrom _________ 8746 Lm'),
+        md.text('Far. Temperatur ______ 5000 K'),
+        md.text('Schutzart _________ IP67'),
+        sep='\n'
+    ), reply_markup=keyboard),
+    await bot.send_message(
+        message.chat.id,
+        'Green-Al-StreetB50',
+    )
+    file = open('GreenAlStreetB50.jpg', 'rb')
+    await bot.send_photo(message.chat.id, photo=file)
+    file.close()
+    keyboard = types.InlineKeyboardMarkup()
+    url_button = types.InlineKeyboardButton(text="Details auf der Seite!",
+                                            url="https://www.green-al-light.ru/catalog/tovar/36/")
+    keyboard.add(url_button)
+    await bot.send_message(message.chat.id, md.text(
+        md.text("Leistung ______________ 50 W"),
+        md.text('Lichtstrom _________ 7896 Lm'),
+        md.text('Farbe. Temperatur ______ 5000 K'),
+        md.text('Schutzart _________ IP67'),
+        sep='\n'
+    ), reply_markup=keyboard),
+    await bot.send_message(
+        message.chat.id,
+        'Green-Al-StreetB100',
+    )
+    file = open('GreenAlStreetB100.jpg', 'rb')
+    await bot.send_photo(message.chat.id, photo=file)
+    file.close()
+    keyboard = types.InlineKeyboardMarkup()
+    url_button = types.InlineKeyboardButton(text="Details auf der Seite!",
+                                            url="https://www.green-al-light.ru/catalog/tovar/32/")
+    keyboard.add(url_button)
+    await bot.send_message(message.chat.id, md.text(
+        md.text("Leistung ______________ 100 W"),
+        md.text('Lichtstrom _________ 15792 Lm'),
+        md.text('Far. Temperatur ______ 5000 K'),
+        md.text('Stärke des Schutzes_________IP67'),
+        sep='\n'
+    ), reply_markup=keyboard),
+    await bot.send_message(
+        message.chat.id,
+        'Green-Al-StreetB150',
+    )
+    file = open('GreenAlStreetB150.jpg', 'rb')
+    await bot.send_photo(message.chat.id, photo=file)
+    file.close()
+    keyboard = types.InlineKeyboardMarkup()
+    url_button = types.InlineKeyboardButton(text="Details auf der Seite!",
+                                            url="https://www.green-al-light.ru/catalog/tovar/33/")
+    keyboard.add(url_button)
+    await bot.send_message(message.chat.id, md.text(
+        md.text("Leistung ______________ 150 W"),
+        md.text('Lichtstrom _________ 23688 lm'),
+        md.text('Far. Temperatur ______ 5000 K'),
+        md.text('Schutzart _________ IP67'),
+        sep='\n'
+    ), reply_markup=keyboard),
+    await bot.send_message(
+        message.chat.id,
+        'Green-Al-StreetB200',
+    )
+    file = open('GreenAlStreetB200.jpg', 'rb')
+    await bot.send_photo(message.chat.id, photo=file)
+    file.close()
+    keyboard = types.InlineKeyboardMarkup()
+    url_button = types.InlineKeyboardButton(text="Details auf der Seite!",
+                                            url="https://www.green-al-light.ru/catalog/tovar/39/")
+    keyboard.add(url_button)
+    await bot.send_message(message.chat.id, md.text(
+        md.text("Leistung ______________ 200 W"),
+        md.text('Lichtstrom _________ 31584 lm'),
+        md.text('Far. Temperatur ______ 5000 K'),
+        md.text('Schutzart _________ IP67'),
+        sep='\n'
+    ), reply_markup=keyboard),
+    await bot.send_message(
+        message.chat.id,
+        'Green-Al-StreetB250',
+    )
+    file = open('GreenAlStreetB250.jpg', 'rb')
+    await bot.send_photo(message.chat.id, photo=file)
+    file.close()
+    keyboard = types.InlineKeyboardMarkup()
+    url_button = types.InlineKeyboardButton(text="Details auf der Seite!",
+                                            url="https://www.green-al-light.ru/catalog/tovar/40/")
+    keyboard.add(url_button)
+    await bot.send_message(message.chat.id, md.text(
+        md.text("Leistung ______________ 240 W"),
+        md.text('Lichtstrom _________ 39480 lm'),
+        md.text('Far. Temperatur ______ 5000 K'),
+        md.text('Schutzart _________ IP67'),
+        sep='\n'
+    ), reply_markup=keyboard),
+
+
+@dp.message_handler(state='*', text=['Industriebeleuchtung'])
+async def default_test(message):
+    await bot.send_message(
+        message.chat.id,
+        'GreenAl-Prom A30',
+    )
+    keyboard = types.InlineKeyboardMarkup()
+    url_button = types.InlineKeyboardButton(text="Details auf der Seite!",
+                                            url="https://www.green-al-light.ru/catalog/tovar/41/")
+    keyboard.add(url_button)
+    await bot.send_message(message.chat.id, md.text(
+        md.text("Leistung ______________ 30 W"),
+        md.text('Lichtstrom _________ 39480 lm'),
+        md.text('Far. Temperatur ______ 5000 K'),
+        md.text('Schutzart _________ IP67'),
+        sep='\n'
+    ), reply_markup=keyboard),
+    await bot.send_message(
+        message.chat.id,
+        ' GreenAl-Prom A60',
+    )
+    keyboard = types.InlineKeyboardMarkup()
+    url_button = types.InlineKeyboardButton(text="Details auf der Seite!",
+                                            url="https://www.green-al-light.ru/catalog/tovar/23/")
+    keyboard.add(url_button)
+    await bot.send_message(message.chat.id, md.text(
+        md.text("Leistung ______________ 60 W"),
+        md.text('Lichtstrom _________ 8932 lm'),
+        md.text('Far. Temperatur ______ 5000 K'),
+        md.text('Schutzart _________ IP67'),
+        sep='\n'
+    ), reply_markup=keyboard),
+    await bot.send_message(
+        message.chat.id,
+        'GreenAl-Prom A90',
+    )
+    keyboard = types.InlineKeyboardMarkup()
+    url_button = types.InlineKeyboardButton(text="Details auf der Seite!",
+                                            url="https://www.green-al-light.ru/catalog/tovar/24/")
+    keyboard.add(url_button)
+    await bot.send_message(message.chat.id, md.text(
+        md.text("Leistung ______________ 90 W"),
+        md.text('Lichtstrom _________ 13398 lm'),
+        md.text('Far. Temperatur ______ 5000 K'),
+        md.text('Schutzart _________ IP67'),
+        sep='\n'
+    ), reply_markup=keyboard),
+    await bot.send_message(
+        message.chat.id,
+        'GreenAl-Prom А120',
+    )
+    keyboard = types.InlineKeyboardMarkup()
+    url_button = types.InlineKeyboardButton(text="Details auf der Seite!",
+                                            url="https://www.green-al-light.ru/catalog/tovar/42/")
+    keyboard.add(url_button)
+    await bot.send_message(message.chat.id, md.text(
+        md.text("Leistung ______________ 120 W"),
+        md.text('Lichtstrom _________ 17864 Lm'),
+        md.text('Far. Temperatur ______ 5000 K'),
+        md.text('Schutzart _________ IP67'),
+        sep='\n'
+    ), reply_markup=keyboard),
+    await bot.send_message(
+        message.chat.id,
+        'GreenAl-Prom A150',
+    )
+    keyboard = types.InlineKeyboardMarkup()
+    url_button = types.InlineKeyboardButton(text="Details auf der Seite!",
+                                            url="https://www.green-al-light.ru/catalog/tovar/47/")
+    keyboard.add(url_button)
+    await bot.send_message(message.chat.id, md.text(
+        md.text("Leistung ______________ 150 W"),
+        md.text('Lichtstrom _________ 22330 lm'),
+        md.text('Farbe. Temperatur ______ 5000 K'),
+        md.text('Schutzart _________ IP67'),
+        sep='\n'
+    ), reply_markup=keyboard),
+    await bot.send_message(
+        message.chat.id,
+        'GreenAl-Prom B50',
+    )
+    file = open('GreenAlPromB50.jpg', 'rb')
+    await bot.send_photo(message.chat.id, photo=file)
+    file.close()
+    keyboard = types.InlineKeyboardMarkup()
+    url_button = types.InlineKeyboardButton(text="Details auf der Seite!",
+                                            url="https://www.green-al-light.ru/catalog/tovar/48/")
+    keyboard.add(url_button)
+    await bot.send_message(message.chat.id, md.text(
+        md.text("Leistung ______________ 50 W"),
+        md.text('Lichtstrom _________ 7896 Lm'),
+        md.text('Far. Temperatur ______ 5000 K'),
+        md.text('Schutzart _________ IP67'),
+        sep='\n'
+    ), reply_markup=keyboard),
+    await bot.send_message(
+        message.chat.id,
+        'GreenAl-Prom B100',
+    )
+    file = open('GreenAlPromB100.jpg', 'rb')
+    await bot.send_photo(message.chat.id, photo=file)
+    file.close()
+    keyboard = types.InlineKeyboardMarkup()
+    url_button = types.InlineKeyboardButton(text="Details auf der Seite!",
+                                            url="https://www.green-al-light.ru/catalog/tovar/43/")
+    keyboard.add(url_button)
+    await bot.send_message(message.chat.id, md.text(
+        md.text("Leistung ______________ 100 W"),
+        md.text('Lichtstrom _________ 15792 Lm'),
+        md.text('Far. Temperatur ______ 5000 K'),
+        md.text('Schutzart _________ IP67'),
+        sep='\n'
+    ), reply_markup=keyboard),
+    await bot.send_message(
+        message.chat.id,
+        'GreenAl-Prom B150',
+    )
+    file = open('GreenAlPromB150.jpg', 'rb')
+    await bot.send_photo(message.chat.id, photo=file)
+    file.close()
+    keyboard = types.InlineKeyboardMarkup()
+    url_button = types.InlineKeyboardButton(text="Details auf der Seite!",
+                                            url="https://www.green-al-light.ru/catalog/tovar/44/")
+    keyboard.add(url_button)
+    await bot.send_message(message.chat.id, md.text(
+        md.text("Leistung ______________ 150 W"),
+        md.text('Lichtstrom _________ 23688 lm'),
+        md.text('Far. Temperatur ______ 5000 K'),
+        md.text('Schutzart _________ IP67'),
+        sep='\n'
+    ), reply_markup=keyboard),
+    await bot.send_message(
+        message.chat.id,
+        'GreenAl-Prom B200',
+    )
+    file = open('GreenAlPromB200.jpg', 'rb')
+    await bot.send_photo(message.chat.id, photo=file)
+    file.close()
+    keyboard = types.InlineKeyboardMarkup()
+    url_button = types.InlineKeyboardButton(text="Details auf der Seite!",
+                                            url="https://www.green-al-light.ru/catalog/tovar/45/")
+    keyboard.add(url_button)
+    await bot.send_message(message.chat.id, md.text(
+        md.text("Leistung ______________ 200 W"),
+        md.text('Lichtstrom _________ 31584 lm'),
+        md.text('Far. Temperatur ______ 5000 K'),
+        md.text('Schutzart _________ IP67'),
+        sep='\n'
+    ), reply_markup=keyboard),
+    await bot.send_message(
+        message.chat.id,
+        'GreenAl-Prom B240',
+    )
+    file = open('GreenAlPromB240.jpg', 'rb')
+    await bot.send_photo(message.chat.id, photo=file)
+    file.close()
+    keyboard = types.InlineKeyboardMarkup()
+    url_button = types.InlineKeyboardButton(text="Details auf der Seite!",
+                                            url="https://www.green-al-light.ru/catalog/tovar/46/")
+    keyboard.add(url_button)
+    await bot.send_message(message.chat.id, md.text(
+        md.text("Leistung ______________ 240 W"),
+        md.text('Lichtstrom _________ 36480 lm'),
+        md.text('Far. Temperatur ______ 5000 K'),
+        md.text('Schutzart _________ IP67'),
+        sep='\n'
+
+    ), reply_markup=keyboard),
+
+
+@dp.message_handler(state='*', text=['Gewerbliche Beleuchtung'])
+async def default_test(message):
+    await bot.send_message(
+        message.chat.id,
+        'GreenAl-Trade Line 10',
+    )
+    keyboard = types.InlineKeyboardMarkup()
+    url_button = types.InlineKeyboardButton(text="Details auf der Seite!",
+                                            url="https://www.green-al-light.ru/catalog/tovar/25/")
+    keyboard.add(url_button)
+    await bot.send_message(message.chat.id, md.text(
+        md.text("Leistung ______________ 10 W"),
+        md.text('Lichtstrom _________ 1500 lm'),
+        md.text('Far. Temperatur ______ 5000 K'),
+        md.text('Schutzart _________ IP67'),
+        sep='\n'
+    ), reply_markup=keyboard),
+    await bot.send_message(
+        message.chat.id,
+        'GreenAl-Trade Line 20',
+    )
+    keyboard = types.InlineKeyboardMarkup()
+    url_button = types.InlineKeyboardButton(text="Details auf der Seite!",
+                                            url="https://www.green-al-light.ru/catalog/tovar/26/")
+    keyboard.add(url_button)
+    await bot.send_message(message.chat.id, md.text(
+        md.text("Leistung ______________ 20 W"),
+        md.text('Lichtstrom _________ 3000 lm'),
+        md.text('Far. Temperatur ______ 5000 K'),
+        md.text('Schutzart _________ IP67'),
+        sep='\n'
+
+    ), reply_markup=keyboard),
+
+
+@dp.message_handler(state='*', text=['Phyto-Beleuchtung'])
+async def default_test(message):
+    await bot.send_message(
+        message.chat.id,
+        'GreenAl-Phyto 30',
+    )
+    keyboard = types.InlineKeyboardMarkup()
+    url_button = types.InlineKeyboardButton(text="Details auf der Seite!",
+                                            url="https://www.green-al-light.ru/catalog/tovar/27/")
+    keyboard.add(url_button)
+    await bot.send_message(message.chat.id, md.text(
+        md.text("Leistung ______________ 30 W"),
+        md.text('Schutzart _________ IP67'),
+        sep='\n'
+    ), reply_markup=keyboard),
+    await bot.send_message(
+        message.chat.id,
+        'GreenAl-Phyto 60',
+    )
+    keyboard = types.InlineKeyboardMarkup()
+    url_button = types.InlineKeyboardButton(text="Details auf der Seite!",
+                                            url="https://www.green-al-light.ru/catalog/tovar/28/")
+    keyboard.add(url_button)
+    await bot.send_message(message.chat.id, md.text(
+        md.text("Leistung ______________ 60 W"),
+        md.text('Schutzart _________ IP67'),
+        sep='\n'
+
+    ), reply_markup=keyboard),
+
+
+@dp.message_handler(state='*', text=['Rückkehr'])
+async def cancel(message: types.Message, state: FSMContext):
+    with open('userlog.txt', 'a') as file:  # Создается текстовый файл
+        # в него записывается ID пользователя, его юзернейм и дата нажатия на кнопку START в боте.
+        file.write(
+            f'\n\nUser ID: {message.from_user.id}\n\nUsername: {message.from_user.username}\n\nDate visited: {message.date}\n----------------------')
+    keyboard = ReplyKeyboardMarkup(resize_keyboard=True)
+    btns = ["Ausrüstung für Pilzfarmen ", " LED-Beleuchtung ", "Über das Unternehmen"]
+    for btn in btns:
+        keyboard.add(btn)
+    await state.finish()
+    await bot.send_message(message.chat.id, 'Ihre Aktion wird abgebrochen', reply_markup=keyboard)
+
+
+#####################################################################################################################
+
+########################################---Блок для "О компнии"---#########################################################################################################
+
+@dp.message_handler(state='*', text=['Über das Unternehmen'])
+async def wiki_request(message: types.Message):
+    await Form.wiki.set()
+    await bot.send_message(
+        message.chat.id,
+        md.text(
+            md.text("«GreenAl» LLC GreenAl stellt Produkte her:"),
+            md.text('- Ausrüstung für Pilzfarmen;'),
+            md.text('- Industrielle Gewächshauskomplexe;'),
+            md.text('- Industrielle LED-Leuchten;'),
+            md.text('- Komponenten für Solarenergie;'),
+            sep='\n'
+
+        ),
+    )
+
+
+#################################################################################################################################################
+@dp.message_handler(state='*', text='✏️Bestellgeräteberechnung')
+async def voice_pitch(message: types.Message, state: FSMContext):
+    keyboard = types.InlineKeyboardMarkup()
+    url_button = types.InlineKeyboardButton(text="Schreiben Sie an einen Berater!",
+                                            url="https://t.me/ilnary")
+    keyboard.add(url_button)
+    await bot.send_message(message.chat.id, md.text(
+        md.text("Guten Tag!"),
+        md.text('Ich heiße Ilnar'),
+        md.text('Für die Bestellung von Geräten kontaktieren Sie mich bitte!'),
+        md.text('Immer gerne für Sie da'),
+        sep='\n'
+
+    ), reply_markup=keyboard),
+
+
+@dp.message_handler(state='*', text='✏️ Bеstellen Sie eine Berechnung der Ausrüstung')
+async def voice_pitch(message: types.Message, state: FSMContext):
+    keyboard = types.InlineKeyboardMarkup()
+    url_button = types.InlineKeyboardButton(text="Schreiben Sie an einen Berater!",
+                                            url="https://t.me/MaratZainashev")
+    keyboard.add(url_button)
+    await bot.send_message(message.chat.id, md.text(
+        md.text("Guten Tag!"),
+        md.text('Ich heiße Marat'),
+        md.text('Für die Bestellung von Geräten kontaktieren Sie mich bitte!'),
+        md.text('Immer gerne für Sie da'),
+        sep='\n'
+
+    ), reply_markup=keyboard),
+
+
+########################################################################################################################################################
+
+###################################################################################################################################################################
+
+@dp.message_handler(state='*', text='🇫🇷Français')
+async def start_cmd(message: types.Message):
+    global keyboard
+    await bot.send_message(
+        message.chat.id,
+        md.text(
+            md.text("Langue sélectionnée:", md.bold("Français")),
+            sep='\n'
+        ),
+        parse_mode=ParseMode.MARKDOWN,
+    )
+    chatId = message.chat.id
+    text = message.text.lower()
+    keyboard = ReplyKeyboardMarkup(
+        resize_keyboard=True, one_time_keyboard=False)
+    buttons = ['Équipement pour les champignonnières', 'Éclairage LED', 'À propos de l']
+    for button in buttons:
+        keyboard.add(button)
+    await bot.send_message(
+        message.chat.id,
+        md.text(
+            md.text("Salut je suis -", md.bold("Green Al bot")),
+            md.text('Je serai ravi de vous aider!'),
+            md.text('Utilisez votre clavier pour commencer!'),
+            sep='\n'
+        ),
+        reply_markup=keyboard,
+        parse_mode=ParseMode.MARKDOWN,
+    )
+
+
+@dp.message_handler(state='*', text='Équipement pour les champignonnières')
+async def voice_pitch(message: types.Message, state: FSMContext):
+    await Form.voice.set()
+    keyboard = ReplyKeyboardMarkup(
+        resize_keyboard=True, one_time_keyboard=False)
+    buttons = ['✏️Calcul dе l équipement de commande',
+               "Supports en aluminium pour la culture de champignons, champignons",
+               "Matériel pour la collecte de champignons",
+               "Équipement optionel", "Retour à"]
+    for button in buttons:
+        keyboard.add(button)
+    await bot.send_message(
+        message.chat.id,
+        md.text(
+            md.text("Bienvenue dans la section:", md.bold("Équipement pour les champignonnières")),
+            md.text("Choisissez la section qui vous intéresse!"),
+            sep='\n'
+        ),
+        reply_markup=keyboard,
+        parse_mode=ParseMode.MARKDOWN,
+    )
+
+
+@dp.message_handler(state='*', text='Éclairage LED')
+async def voice_pitch(message: types.Message, state: FSMContext):
+    await Form.voice.set()
+    keyboard = ReplyKeyboardMarkup(
+        resize_keyboard=True, one_time_keyboard=False)
+    buttons = ['✏️Cаlcul de l équipement de commande', "Réverbères", "Éclairage industriel", "Éclairage commercial",
+               "Phyto-éclairage", "Revenir"]
+    for button in buttons:
+        keyboard.add(button)
+    await bot.send_message(
+        message.chat.id,
+        md.text(
+            md.text("Bienvenue dans la section:", md.bold("Éclairage LED")),
+            md.text("Choisissez la section qui vous intéresse!"),
+            sep='\n'
+        ),
+        reply_markup=keyboard,
+        parse_mode=ParseMode.MARKDOWN,
+    )
+
+    @dp.message_handler(state='*', text=['À propos de l'])
+    async def wiki_request(message: types.Message):
+        await Form.wiki.set()
+        await bot.send_message(
+            message.chat.id,
+            md.text(
+                md.text("«GreenAl» LLC GreenAl fabrique des produits:"),
+                md.text('- Équipement pour les fermes de champignons;'),
+                md.text('- Complexes de serres industrielles;'),
+                md.text('- Luminaires industriels à LED;'),
+                md.text('- Composants pour lénergie solaire;'),
+                sep='\n'
+
+            ),
+        )
+
+
+####################################---Блок для "Оборудывание для грибных ферм"--- #####################################################################################
+
+@dp.message_handler(state='*', text='Équipement pour les champignonnières')
+async def voice_pitch(message: types.Message, state: FSMContext):
+    await Form.voice.set()
+    keyboard = ReplyKeyboardMarkup(
+        resize_keyboard=True, one_time_keyboard=False)
+    buttons = ['✏️Calcul dе l équipement de commande',
+               "Supports en aluminium pour la culture de champignons, champignons",
+               "Matériel pour la collecte de champignons",
+               "Équipement optionel", "Retour à"]
+    for button in buttons:
+        keyboard.add(button)
+    await bot.send_message(
+        message.chat.id,
+        md.text(
+            md.text("Bienvenue dans la section:", md.bold("Équipement pour les champignonnières")),
+            md.text("Choisissez la section qui vous intéresse!"),
+            sep='\n'
+        ),
+        reply_markup=keyboard,
+        parse_mode=ParseMode.MARKDOWN,
+    )
+
+
+@dp.message_handler(state='*', text=['Annulation'])
+async def cancel(message: types.Message, state: FSMContext):
+    with open('userlog.txt', 'a') as file:  # Создается текстовый файл
+        # в него записывается ID пользователя, его юзернейм и дата нажатия на кнопку START в боте.
+        file.write(
+            f'\n\nUser ID: {message.from_user.id}\n\nUsername: {message.from_user.username}\n\nDate visited: {message.date}\n----------------------')
+    keyboard = ReplyKeyboardMarkup(resize_keyboard=True)
+    btns = ["Équipement pour les champignonnières", "Éclairage LED", "À propos de l"]
+    for btn in btns:
+        keyboard.add(btn)
+    await state.finish()
+    await bot.send_message(message.chat.id, 'Votre action est annulée', reply_markup=keyboard)
+
+
+#####################################################################################################################
+
+#######################################----Блок для "Green-al-mushroom"----###########################################################################
+
+
+@dp.message_handler(state='*', text=['Supports en aluminium pour la culture de champignons, champignons'])
+async def default_test(message):
+    await bot.send_message(
+        message.chat.id,
+        'Supports en aluminium pour la culture de champignons, champignons',
+    )
+    file = open('Shelvings for mushroom growing.jpg', 'rb')
+    await bot.send_photo(message.chat.id, photo=file)
+    file.close()
+    keyboard = types.InlineKeyboardMarkup()
+    url_button = types.InlineKeyboardButton(text="Détails sur le site!",
+                                            url="https://www.green-al-mushroom.ru/catalog/tovar/stellazh-6-yarusnyy/")
+    keyboard.add(url_button)
+    await bot.send_message(message.chat.id, md.text(
+        md.text("Longueur du rack_30,0 m (standard)"),
+        md.text('Largeur (intérieure) _ 1,34 m (standard)'),
+        md.text('Largeur (sortie) _ 1,5 m (standard)'),
+        md.text('Hauteur du rack_de 2,8 à 5,0 m'),
+        md.text('Nombre détages_de 3 à 7 pièces'),
+        md.text('Espacement des colonnes de support_1,5 / 3 m'),
+        md.text('Hauteur du plateau (étagère) _600 mm'),
+        md.text('Hauteur du panneau latéral_180 mm'),
+        md.text('Poids const. rack_1 900 kg'),
+        md.text('Charge de conception_195 kg / m2'),
+        sep='\n'
+
+    ), reply_markup=keyboard),
+
+
+@dp.message_handler(state='*', text=['Matériel pour la collecte de champignons'])
+async def default_test(message):
+    await bot.send_message(
+        message.chat.id,
+        'Chariot suspendu Standart pour la collecte de champignons',
+    )
+    file = open('Picking lorry Standart.jpg', 'rb')
+    await bot.send_photo(message.chat.id, photo=file)
+    file.close()
+    keyboard = types.InlineKeyboardMarkup()
+    url_button = types.InlineKeyboardButton(text="Détails sur le site!",
+                                            url="https://www.green-al-mushroom.ru/catalog/tovar/telezhka-podvesnaya-st/")
+    keyboard.add(url_button)
+    await bot.send_message(message.chat.id, md.text(
+        md.text("Largeur_1 950 mm"),
+        md.text('Hauteur_3 130 mm'),
+        md.text('Profondeur_610 mm'),
+        md.text('Poids_59 kg'),
+        md.text('Capacité de chargement_170 kg'),
+        sep='\n'
+
+    ), reply_markup=keyboard),
+    await bot.send_message(
+        message.chat.id,
+        'Chariot au sol pour la collecte des champignons',
+    )
+    file = open('Picking trolley for lower beds.jpg', 'rb')
+    await bot.send_photo(message.chat.id, photo=file)
+    file.close()
+    keyboard = types.InlineKeyboardMarkup()
+    url_button = types.InlineKeyboardButton(text="Détails sur le site!",
+                                            url="https://www.green-al-mushroom.ru/catalog/tovar/telezhka-napolnaya/")
+    keyboard.add(url_button)
+    await bot.send_message(message.chat.id, md.text(
+        md.text("Poids de la structure_15 kg"),
+        md.text('Capacité de chargement_150 kg'),
+        md.text('Matériau du siège_Plastique'),
+        sep='\n'
+
+    ), reply_markup=keyboard),
+    await bot.send_message(
+        message.chat.id,
+        'Plateforme de cueillette de champignons',
+    )
+    file = open('Picking platform for lower beds.jpg', 'rb')
+    await bot.send_photo(message.chat.id, photo=file)
+    file.close()
+    keyboard = types.InlineKeyboardMarkup()
+    url_button = types.InlineKeyboardButton(text="Détails sur le site!",
+                                            url="https://www.green-al-mushroom.ru/catalog/tovar/platforma-dlya-sbora/")
+    keyboard.add(url_button)
+    await bot.send_message(message.chat.id, md.text(
+        md.text("Longueur_1000 mm"),
+        md.text('Hauteur_1125 mm'),
+        md.text('Largeur_535 mm'),
+        md.text('Poids de la plate-forme_16 kg'),
+        md.text('Poids du tabouret_5 kg'),
+        md.text('Taille de cellule pour les balances_330 * 360 mm'),
+        md.text('Charge pour 1 rangée_10 kg'),
+        md.text('Nombre de rangées pour les étagères_4'),
+        sep='\n'
+
+    ), reply_markup=keyboard),
+
+
+@dp.message_handler(state='*', text=['Équipement optionel'])
+async def default_test(message):
+    await bot.send_message(
+        message.chat.id,
+        'Support de chargement de balance',
+    )
+    file = open('Cart for charging scales.jpg', 'rb')
+    await bot.send_photo(message.chat.id, photo=file)
+    file.close()
+    keyboard = types.InlineKeyboardMarkup()
+    url_button = types.InlineKeyboardButton(text="Détails sur le site!",
+                                            url="https://www.green-al-mushroom.ru/catalog/tovar/stend-dlya-zaryadki/")
+    keyboard.add(url_button)
+    await bot.send_message(message.chat.id, md.text(
+        md.text("Hauteur_1300 mm"),
+        md.text('Longueur_1000 mm'),
+        md.text('Largeur_800 mm'),
+        md.text('Nombre de places_20 pcs'),
+        md.text('Taille de cellule pour les balances_330 * 360 mm'),
+        md.text('Poids de construction_38 kg'),
+        md.text('Charge par cellule_25 kg'),
+        sep='\n'
+    ), reply_markup=keyboard),
+    await bot.send_message(
+        message.chat.id,
+        'Support de charge pour balance avec prises',
+    )
+    file = open('Cart for charging scales with sockets.jpg', 'rb')
+    await bot.send_photo(message.chat.id, photo=file)
+    file.close()
+    keyboard = types.InlineKeyboardMarkup()
+    url_button = types.InlineKeyboardButton(text="Détails sur le site!",
+                                            url="https://www.green-al-mushroom.ru/catalog/tovar/stend-dlya-zaryadki-s-rozetkami/")
+    keyboard.add(url_button)
+    await bot.send_message(message.chat.id, md.text(
+        md.text("Hauteur_1300 mm"),
+        md.text('Longueur_1000 mm'),
+        md.text('Largeur_800 mm'),
+        md.text('Nombre de places_20 pcs'),
+        md.text('Taille de cellule pour les balances_330 * 360 mm'),
+        md.text('Poids de construction_38 kg'),
+        md.text('Charge par cellule_25 kg'),
+        sep='\n'
+    ), reply_markup=keyboard),
+    await bot.send_message(
+        message.chat.id,
+        'Séchoir pour seaux',
+    )
+    file = open('Cart for drying buckets.jpg', 'rb')
+    await bot.send_photo(message.chat.id, photo=file)
+    file.close()
+    keyboard = types.InlineKeyboardMarkup()
+    url_button = types.InlineKeyboardButton(text="Détails sur le site!",
+                                            url="https://www.green-al-mushroom.ru/catalog/tovar/sushilka/")
+    keyboard.add(url_button)
+    await bot.send_message(message.chat.id, md.text(
+        md.text("Longueur_1 670 mm"),
+        md.text('Hauteur_1 624 mm'),
+        md.text('Largeur_620 mm'),
+        md.text('Poids de construction_17 kg'),
+        md.text('Nombre de places pour seaux_20 pcs'),
+        md.text('Capacité de chargement_120 kg'),
+        sep='\n'
+    ), reply_markup=keyboard),
+
+
+@dp.message_handler(state='*', text=['Retour à'])
+async def cancel(message: types.Message, state: FSMContext):
+    with open('userlog.txt', 'a') as file:  # Создается текстовый файл
+        # в него записывается ID пользователя, его юзернейм и дата нажатия на кнопку START в боте.
+        file.write(
+            f'\n\nUser ID: {message.from_user.id}\n\nUsername: {message.from_user.username}\n\nDate visited: {message.date}\n----------------------')
+    keyboard = ReplyKeyboardMarkup(resize_keyboard=True)
+    btns = ["Équipement pour les champignonnières", "Éclairage LED", "À propos de l"]
+    for btn in btns:
+        keyboard.add(btn)
+    await state.finish()
+    await bot.send_message(message.chat.id, 'Tu es revenu', reply_markup=keyboard)
+
+
+########################################################################################################################
+
+###############################---Блок для "LED светодиодное освещение"---##########################################################3
+
+@dp.message_handler(state='*', text='Éclairage LED')
+async def voice_pitch(message: types.Message, state: FSMContext):
+    await Form.voice.set()
+    keyboard = ReplyKeyboardMarkup(
+        resize_keyboard=True, one_time_keyboard=False)
+    buttons = ['✏️Cаlcul de l équipement de commande', "Réverbères", "Éclairage industriel", "Éclairage commercial",
+               "Phyto-éclairage", "Revenir"]
+    for button in buttons:
+        keyboard.add(button)
+    await bot.send_message(
+        message.chat.id,
+        md.text(
+            md.text("Bienvenue dans la section:", md.bold("Éclairage LED")),
+            md.text("Choisissez la section qui vous intéresse!"),
+            sep='\n'
+        ),
+        reply_markup=keyboard,
+        parse_mode=ParseMode.MARKDOWN,
+    )
+
+
+@dp.message_handler(state='*', text=['Annulation'])
+async def cancel(message: types.Message, state: FSMContext):
+    with open('userlog.txt', 'a') as file:  # Создается текстовый файл
+        # в него записывается ID пользователя, его юзернейм и дата нажатия на кнопку START в боте.
+        file.write(
+            f'\n\nUser ID: {message.from_user.id}\n\nUsername: {message.from_user.username}\n\nDate visited: {message.date}\n----------------------')
+    keyboard = ReplyKeyboardMarkup(resize_keyboard=True)
+    btns = ["Équipement pour les champignonnières", "Éclairage LED", "À propos de l"]
+    for btn in btns:
+        keyboard.add(btn)
+    await state.finish()
+    await bot.send_message(message.chat.id, 'Votre action est annulée', reply_markup=keyboard)
+
+
+#################################################################################################################
+
+#########################---Блок для "Green-al-light"---#####################################################################################
+
+
+@dp.message_handler(state='*', text=['Réverbères'])
+async def default_test(message):
+    await bot.send_message(
+        message.chat.id,
+        'Green-Al-StreetA30',
+    )
+    file = open('GreenAlStreetA30.jpg', 'rb')
+    await bot.send_photo(message.chat.id, photo=file)
+    file.close()
+    keyboard = types.InlineKeyboardMarkup()
+    url_button = types.InlineKeyboardButton(text="Détails sur le site!",
+                                            url="https://www.green-al-light.ru/catalog/tovar/15/")
+    keyboard.add(url_button)
+    await bot.send_message(message.chat.id, md.text(
+        md.text("Puissance ______________ 30 W"),
+        md.text('Flux lumineux _________ 4373 lm'),
+        md.text('Coul. température ______ 5000 K'),
+        md.text('Degré de protection _________ IP67'),
+        sep='\n'
+    ), reply_markup=keyboard),
+    await bot.send_message(
+        message.chat.id,
+        'Green-Al-StreetA60',
+    )
+    file = open('GreenAlStreetA60.jpg', 'rb')
+    await bot.send_photo(message.chat.id, photo=file)
+    file.close()
+    keyboard = types.InlineKeyboardMarkup()
+    url_button = types.InlineKeyboardButton(text="Détails sur le site!",
+                                            url="https://www.green-al-light.ru/catalog/tovar/16/")
+    keyboard.add(url_button)
+    await bot.send_message(message.chat.id, md.text(
+        md.text("Puissance ______________ 60 W"),
+        md.text('Flux lumineux _________ 8746 Lm'),
+        md.text('Coul. température ______ 5000 K'),
+        md.text('Degré de protection _________ IP67'),
+        sep='\n'
+    ), reply_markup=keyboard),
+    await bot.send_message(
+        message.chat.id,
+        'Green-Al-StreetB50',
+    )
+    file = open('GreenAlStreetB50.jpg', 'rb')
+    await bot.send_photo(message.chat.id, photo=file)
+    file.close()
+    keyboard = types.InlineKeyboardMarkup()
+    url_button = types.InlineKeyboardButton(text="Détails sur le site!",
+                                            url="https://www.green-al-light.ru/catalog/tovar/36/")
+    keyboard.add(url_button)
+    await bot.send_message(message.chat.id, md.text(
+        md.text("Puissance ______________ 50 Вт"),
+        md.text('Flux lumineux _________ 7896 Лм'),
+        md.text('Coul. température ______ 5000 K'),
+        md.text('Degré de protection _________ IP67'),
+        sep='\n'
+    ), reply_markup=keyboard),
+    await bot.send_message(
+        message.chat.id,
+        'Green-Al-StreetB100',
+    )
+    file = open('GreenAlStreetB100.jpg', 'rb')
+    await bot.send_photo(message.chat.id, photo=file)
+    file.close()
+    keyboard = types.InlineKeyboardMarkup()
+    url_button = types.InlineKeyboardButton(text="Détails sur le site!",
+                                            url="https://www.green-al-light.ru/catalog/tovar/32/")
+    keyboard.add(url_button)
+    await bot.send_message(message.chat.id, md.text(
+        md.text("Puissance ______________ 100 Вт"),
+        md.text('Flux lumineux _________ 15792 Лм'),
+        md.text('Coul. température ______ 5000 K'),
+        md.text('Degré de protection _________ IP67'),
+        sep='\n'
+    ), reply_markup=keyboard),
+    await bot.send_message(
+        message.chat.id,
+        'Green-Al-StreetB150',
+    )
+    file = open('GreenAlStreetB150.jpg', 'rb')
+    await bot.send_photo(message.chat.id, photo=file)
+    file.close()
+    keyboard = types.InlineKeyboardMarkup()
+    url_button = types.InlineKeyboardButton(text="Détails sur le site!",
+                                            url="https://www.green-al-light.ru/catalog/tovar/33/")
+    keyboard.add(url_button)
+    await bot.send_message(message.chat.id, md.text(
+        md.text("Puissance ______________ 150 Вт"),
+        md.text('Flux lumineux _________ 23688 Лм'),
+        md.text('Coul. température ______ 5000 K'),
+        md.text('Degré de protection _________ IP67'),
+        sep='\n'
+    ), reply_markup=keyboard),
+    await bot.send_message(
+        message.chat.id,
+        'Green-Al-StreetB200',
+    )
+    file = open('GreenAlStreetB200.jpg', 'rb')
+    await bot.send_photo(message.chat.id, photo=file)
+    file.close()
+    keyboard = types.InlineKeyboardMarkup()
+    url_button = types.InlineKeyboardButton(text="Détails sur le site!",
+                                            url="https://www.green-al-light.ru/catalog/tovar/39/")
+    keyboard.add(url_button)
+    await bot.send_message(message.chat.id, md.text(
+        md.text("Puissance ______________ 200 Вт"),
+        md.text('Flux lumineux _________ 31584 Лм'),
+        md.text('Coul. température ______ 5000 K'),
+        md.text('Degré de protection _________ IP67'),
+        sep='\n'
+    ), reply_markup=keyboard),
+    await bot.send_message(
+        message.chat.id,
+        'Green-Al-StreetB250',
+    )
+    file = open('GreenAlStreetB250.jpg', 'rb')
+    await bot.send_photo(message.chat.id, photo=file)
+    file.close()
+    keyboard = types.InlineKeyboardMarkup()
+    url_button = types.InlineKeyboardButton(text="Détails sur le site!",
+                                            url="https://www.green-al-light.ru/catalog/tovar/40/")
+    keyboard.add(url_button)
+    await bot.send_message(message.chat.id, md.text(
+        md.text("Puissance ______________ 240 Вт"),
+        md.text('Flux lumineux _________ 39480 Лм'),
+        md.text('Coul. température ______ 5000 K'),
+        md.text('Degré de protection _________ IP67'),
+        sep='\n'
+    ), reply_markup=keyboard),
+
+
+@dp.message_handler(state='*', text=['Éclairage industriel'])
+async def default_test(message):
+    await bot.send_message(
+        message.chat.id,
+        'GreenAl-Prom A30',
+    )
+    keyboard = types.InlineKeyboardMarkup()
+    url_button = types.InlineKeyboardButton(text="Détails sur le site!",
+                                            url="https://www.green-al-light.ru/catalog/tovar/41/")
+    keyboard.add(url_button)
+    await bot.send_message(message.chat.id, md.text(
+        md.text("Puissance ______________ 30 Вт"),
+        md.text('Flux lumineux _________ 39480 Лм'),
+        md.text('Coul. température ______ 5000 K'),
+        md.text('Degré de protection _________ IP67'),
+        sep='\n'
+    ), reply_markup=keyboard),
+    await bot.send_message(
+        message.chat.id,
+        ' GreenAl-Prom A60',
+    )
+    keyboard = types.InlineKeyboardMarkup()
+    url_button = types.InlineKeyboardButton(text="Détails sur le site!",
+                                            url="https://www.green-al-light.ru/catalog/tovar/23/")
+    keyboard.add(url_button)
+    await bot.send_message(message.chat.id, md.text(
+        md.text("Puissance ______________ 60 Вт"),
+        md.text('Flux lumineux _________ 8932 Лм'),
+        md.text('Coul. température ______ 5000 K'),
+        md.text('Degré de protection _________ IP67'),
+        sep='\n'
+    ), reply_markup=keyboard),
+    await bot.send_message(
+        message.chat.id,
+        'GreenAl-Prom A90',
+    )
+    keyboard = types.InlineKeyboardMarkup()
+    url_button = types.InlineKeyboardButton(text="Détails sur le site!",
+                                            url="https://www.green-al-light.ru/catalog/tovar/24/")
+    keyboard.add(url_button)
+    await bot.send_message(message.chat.id, md.text(
+        md.text("Puissance ______________ 90 Вт"),
+        md.text('Flux lumineux _________ 13398 Лм'),
+        md.text('Coul. température ______ 5000 K'),
+        md.text('Degré de protection _________ IP67'),
+        sep='\n'
+    ), reply_markup=keyboard),
+    await bot.send_message(
+        message.chat.id,
+        'GreenAl-Prom А120',
+    )
+    keyboard = types.InlineKeyboardMarkup()
+    url_button = types.InlineKeyboardButton(text="Détails sur le site!",
+                                            url="https://www.green-al-light.ru/catalog/tovar/42/")
+    keyboard.add(url_button)
+    await bot.send_message(message.chat.id, md.text(
+        md.text("Puissance ______________ 120 Вт"),
+        md.text('Flux lumineux _________ 17864 Лм'),
+        md.text('Coul. température ______ 5000 K'),
+        md.text('Degré de protection _________ IP67'),
+        sep='\n'
+    ), reply_markup=keyboard),
+    await bot.send_message(
+        message.chat.id,
+        'GreenAl-Prom A150',
+    )
+    keyboard = types.InlineKeyboardMarkup()
+    url_button = types.InlineKeyboardButton(text="Détails sur le site!",
+                                            url="https://www.green-al-light.ru/catalog/tovar/47/")
+    keyboard.add(url_button)
+    await bot.send_message(message.chat.id, md.text(
+        md.text("Puissance ______________ 150 Вт"),
+        md.text('Flux lumineux _________ 22330 Лм'),
+        md.text('Coul. température ______ 5000 K'),
+        md.text('Degré de protection _________ IP67'),
+        sep='\n'
+    ), reply_markup=keyboard),
+    await bot.send_message(
+        message.chat.id,
+        'GreenAl-Prom B50',
+    )
+    file = open('GreenAlPromB50.jpg', 'rb')
+    await bot.send_photo(message.chat.id, photo=file)
+    file.close()
+    keyboard = types.InlineKeyboardMarkup()
+    url_button = types.InlineKeyboardButton(text="Détails sur le site!",
+                                            url="https://www.green-al-light.ru/catalog/tovar/48/")
+    keyboard.add(url_button)
+    await bot.send_message(message.chat.id, md.text(
+        md.text("Puissance ______________ 50 Вт"),
+        md.text('Flux lumineux _________ 7896 Лм'),
+        md.text('Coul. température ______ 5000 K'),
+        md.text('Degré de protection _________ IP67'),
+        sep='\n'
+    ), reply_markup=keyboard),
+    await bot.send_message(
+        message.chat.id,
+        'GreenAl-Prom B100',
+    )
+    file = open('GreenAlPromB100.jpg', 'rb')
+    await bot.send_photo(message.chat.id, photo=file)
+    file.close()
+    keyboard = types.InlineKeyboardMarkup()
+    url_button = types.InlineKeyboardButton(text="Détails sur le site!",
+                                            url="https://www.green-al-light.ru/catalog/tovar/43/")
+    keyboard.add(url_button)
+    await bot.send_message(message.chat.id, md.text(
+        md.text("Puissance ______________ 100 Вт"),
+        md.text('Flux lumineux _________ 15792 Лм'),
+        md.text('Coul. température ______ 5000 K'),
+        md.text('Degré de protection _________ IP67'),
+        sep='\n'
+    ), reply_markup=keyboard),
+    await bot.send_message(
+        message.chat.id,
+        'GreenAl-Prom B150',
+    )
+    file = open('GreenAlPromB150.jpg', 'rb')
+    await bot.send_photo(message.chat.id, photo=file)
+    file.close()
+    keyboard = types.InlineKeyboardMarkup()
+    url_button = types.InlineKeyboardButton(text="Détails sur le site!",
+                                            url="https://www.green-al-light.ru/catalog/tovar/44/")
+    keyboard.add(url_button)
+    await bot.send_message(message.chat.id, md.text(
+        md.text("Puissance ______________ 150 Вт"),
+        md.text('Flux lumineux _________ 23688 Лм'),
+        md.text('Coul. température ______ 5000 K'),
+        md.text('Degré de protection _________ IP67'),
+        sep='\n'
+    ), reply_markup=keyboard),
+    await bot.send_message(
+        message.chat.id,
+        'GreenAl-Prom B200',
+    )
+    file = open('GreenAlPromB200.jpg', 'rb')
+    await bot.send_photo(message.chat.id, photo=file)
+    file.close()
+    keyboard = types.InlineKeyboardMarkup()
+    url_button = types.InlineKeyboardButton(text="Détails sur le site!",
+                                            url="https://www.green-al-light.ru/catalog/tovar/45/")
+    keyboard.add(url_button)
+    await bot.send_message(message.chat.id, md.text(
+        md.text("Puissance ______________ 200 Вт"),
+        md.text('Flux lumineux _________ 31584 Лм'),
+        md.text('Coul. température ______ 5000 K'),
+        md.text('Degré de protection _________ IP67'),
+        sep='\n'
+    ), reply_markup=keyboard),
+    await bot.send_message(
+        message.chat.id,
+        'GreenAl-Prom B240',
+    )
+    file = open('GreenAlPromB240.jpg', 'rb')
+    await bot.send_photo(message.chat.id, photo=file)
+    file.close()
+    keyboard = types.InlineKeyboardMarkup()
+    url_button = types.InlineKeyboardButton(text="Détails sur le site!",
+                                            url="https://www.green-al-light.ru/catalog/tovar/46/")
+    keyboard.add(url_button)
+    await bot.send_message(message.chat.id, md.text(
+        md.text("Puissance ______________ 240 Вт"),
+        md.text('Flux lumineux _________ 36480 Лм'),
+        md.text('Coul. température ______ 5000 K'),
+        md.text('Degré de protection _________ IP67'),
+        sep='\n'
+    ), reply_markup=keyboard),
+
+
+@dp.message_handler(state='*', text=['Éclairage commercial'])
+async def default_test(message):
+    await bot.send_message(
+        message.chat.id,
+        'GreenAl-Trade Line 10',
+    )
+    keyboard = types.InlineKeyboardMarkup()
+    url_button = types.InlineKeyboardButton(text="Détails sur le site!",
+                                            url="https://www.green-al-light.ru/catalog/tovar/25/")
+    keyboard.add(url_button)
+    await bot.send_message(message.chat.id, md.text(
+        md.text("Puissance ______________ 10 Вт"),
+        md.text('Flux lumineux _________ 1500 Лм'),
+        md.text('Coul. température ______ 5000 K'),
+        md.text('Degré de protection _________ IP67'),
+        sep='\n'
+    ), reply_markup=keyboard),
+    await bot.send_message(
+        message.chat.id,
+        'GreenAl-Trade Line 20',
+    )
+    keyboard = types.InlineKeyboardMarkup()
+    url_button = types.InlineKeyboardButton(text="Détails sur le site!",
+                                            url="https://www.green-al-light.ru/catalog/tovar/26/")
+    keyboard.add(url_button)
+    await bot.send_message(message.chat.id, md.text(
+        md.text("Puissance ______________ 20 Вт"),
+        md.text('Flux lumineux _________ 3000 Лм'),
+        md.text('Coul. température ______ 5000 K'),
+        md.text('Degré de protection _________ IP67'),
+        sep='\n'
+    ), reply_markup=keyboard),
+
+
+@dp.message_handler(state='*', text=['Phyto-éclairage'])
+async def default_test(message):
+    await bot.send_message(
+        message.chat.id,
+        'GreenAl-Phyto 30',
+    )
+    keyboard = types.InlineKeyboardMarkup()
+    url_button = types.InlineKeyboardButton(text="Détails sur le site!",
+                                            url="https://www.green-al-light.ru/catalog/tovar/27/")
+    keyboard.add(url_button)
+    await bot.send_message(message.chat.id, md.text(
+        md.text("Puissance ______________ 30 Вт"),
+        md.text('Degré de protection _________ IP67'),
+        sep='\n'
+    ), reply_markup=keyboard),
+    await bot.send_message(
+        message.chat.id,
+        'GreenAl-Phyto 60',
+    )
+    keyboard = types.InlineKeyboardMarkup()
+    url_button = types.InlineKeyboardButton(text="Détails sur le site!",
+                                            url="https://www.green-al-light.ru/catalog/tovar/28/")
+    keyboard.add(url_button)
+    await bot.send_message(message.chat.id, md.text(
+        md.text("Puissance ______________ 60 Вт"),
+        md.text('Degré de protection _________ IP67'),
+        sep='\n'
+
+    ), reply_markup=keyboard),
+
+
+@dp.message_handler(state='*', text=['Revenir'])
+async def cancel(message: types.Message, state: FSMContext):
+    keyboard = ReplyKeyboardMarkup(resize_keyboard=True)
+    btns = ["Équipement pour les champignonnières", "Éclairage LED", "À propos de l"]
+    for btn in btns:
+        keyboard.add(btn)
+    await state.finish()
+    await bot.send_message(message.chat.id, 'Tu es revenu ', reply_markup=keyboard)
+
+
+#####################################################################################################################
+
+########################################---Блок для "О компнии"---#########################################################################################################
+
+@dp.message_handler(state='*', text=['À propos de l'])
+async def wiki_request(message: types.Message):
+    await Form.wiki.set()
+    await bot.send_message(
+        message.chat.id,
+        md.text(
+            md.text("«GreenAl» LLC GreenAl fabrique des produits:"),
+            md.text('- Équipement pour les fermes de champignons;'),
+            md.text('- Complexes de serres industrielles;'),
+            md.text('- Luminaires industriels à LED;'),
+            md.text('- Composants pour lénergie solaire;'),
+            sep='\n'
+
+        ),
+    )
+
+
+#################################################################################################################################################
+@dp.message_handler(state='*', text='✏️Cаlcul de l équipement de commande')
+async def voice_pitch(message: types.Message, state: FSMContext):
+    keyboard = types.InlineKeyboardMarkup()
+    url_button = types.InlineKeyboardButton(text="Écrivez à un consultant!",
+                                            url="https://t.me/ilnary")
+    keyboard.add(url_button)
+    await bot.send_message(message.chat.id, md.text(
+        md.text("Bonne journée!"),
+        md.text('Je m appelle Ilnar'),
+        md.text('Pour commander du matériel, merci de me contacter!'),
+        md.text('Toujours heureux de vous aider'),
+        sep='\n'
+    ), reply_markup=keyboard),
+
+
+@dp.message_handler(state='*', text='✏️Calcul dе l équipement de commande')
+async def voice_pitch(message: types.Message, state: FSMContext):
+    keyboard = types.InlineKeyboardMarkup()
+    url_button = types.InlineKeyboardButton(text="Écrivez à un consultant!",
+                                            url="https://t.me/MaratZainashev")
+    keyboard.add(url_button)
+    await bot.send_message(message.chat.id, md.text(
+        md.text("Добрый день!"),
+        md.text('Меня зовут Марат'),
+        md.text('По вопросам заказа оборудывания обращайтесь комне!'),
+        md.text('Всегда рад помочь вам'),
+        sep='\n'
+
+    ), reply_markup=keyboard),
+
+
+#########################################################################################################################################################################3
+
+############################################################################################################################################################
+
+@dp.message_handler(state='*', text='🇮🇹Italiano')
+async def start_cmd(message: types.Message):
+    global keyboard
+    await bot.send_message(
+        message.chat.id,
+        md.text(
+            md.text("Lingua selezionata:", md.bold("Italiano")),
+            sep='\n'
+        ),
+        parse_mode=ParseMode.MARKDOWN,
+    )
+    chatId = message.chat.id
+    text = message.text.lower()
+    keyboard = ReplyKeyboardMarkup(
+        resize_keyboard=True, one_time_keyboard=False)
+    buttons = ["Attrezzature per fungaie", "Illuminazione a LED", "Informazioni sull azienda"]
+    for button in buttons:
+        keyboard.add(button)
+    await bot.send_message(
+        message.chat.id,
+        md.text(
+            md.text("Ciao sono -", md.bold("Green Al bot")),
+            md.text('Sarò felice di aiutarti!'),
+            md.text('Usa la tastiera per iniziare!'),
+            sep='\n'
+        ),
+        reply_markup=keyboard,
+        parse_mode=ParseMode.MARKDOWN,
+    )
+
+
+@dp.message_handler(state='*', text='Attrezzature per fungaie')
+async def voice_pitch(message: types.Message, state: FSMContext):
+    await Form.voice.set()
+    keyboard = ReplyKeyboardMarkup(
+        resize_keyboard=True, one_time_keyboard=False)
+    buttons = ['✏️Ordina il calcolo dell attrezzatura',
+               "Rastrelliere in alluminio per la coltivazione di funghi, funghi prataioli",
+               "Attrezzatura per la raccolta dei chappignon",
+               "Attrezzatura aggiuntiva", "Indietro"]
+    for button in buttons:
+        keyboard.add(button)
+    await bot.send_message(
+        message.chat.id,
+        md.text(
+            md.text("Benvenuto nella sezione:", md.bold("Attrezzature per fungaie")),
+            md.text("Scegli la sezione che ti interessa!"),
+            sep='\n'
+        ),
+        reply_markup=keyboard,
+        parse_mode=ParseMode.MARKDOWN,
+    )
+
+
+@dp.message_handler(state='*', text='Illuminazione a LED')
+async def voice_pitch(message: types.Message, state: FSMContext):
+    await Form.voice.set()
+    keyboard = ReplyKeyboardMarkup(
+        resize_keyboard=True)
+    buttons = ["✏️Cаlcolo dell attrezzatura dell ordine", "Illuminazione stradale", "Illuminazione industriale",
+               "Illuminazione commerciale",
+               "Fitoilluminazione", "Ritorno"]
+    for button in buttons:
+        keyboard.add(button)
+    await bot.send_message(
+        message.chat.id,
+        md.text(
+            md.text("Benvenuto nella sezione:", md.bold("Illuminazione a LED")),
+            md.text("Scegli la sezione che ti interessa!"),
+            sep='\n'
+        ),
+        reply_markup=keyboard,
+        parse_mode=ParseMode.MARKDOWN,
+    )
+
+    @dp.message_handler(state='*', text=['Informazioni sull azienda'])
+    async def wiki_request(message: types.Message):
+        await Form.wiki.set()
+        await bot.send_message(
+            message.chat.id,
+            md.text(
+                md.text("«ООО «GreenAl» GreenAl realizza prodotti:"),
+                md.text('- Attrezzature per fungaie;'),
+                md.text('- Complessi di serre industriali;'),
+                md.text('- Apparecchi di illuminazione a LED industriali;'),
+                md.text('- Componenti per energia solare;'),
+                sep='\n'
+
+            ),
+        )
+
+
+####################################---Блок для "Оборудывание для грибных ферм"--- #####################################################################################
+
+@dp.message_handler(state='*', text='Attrezzature per fungaie')
+async def voice_pitch(message: types.Message, state: FSMContext):
+    await Form.voice.set()
+    keyboard = ReplyKeyboardMarkup(
+        resize_keyboard=True, one_time_keyboard=False)
+    buttons = ['✏️Ordina il calcolo dell attrezzatura',
+               "Rastrelliere in alluminio per la coltivazione di funghi, funghi prataioli",
+               "Attrezzatura per la raccolta dei chappignon",
+               "Attrezzatura aggiuntiva", "Indietro"]
+    for button in buttons:
+        keyboard.add(button)
+    await bot.send_message(
+        message.chat.id,
+        md.text(
+            md.text("Benvenuto nella sezione:", md.bold("Attrezzature per fungaie")),
+            md.text("Scegli la sezione che ti interessa!"),
+            sep='\n'
+        ),
+        reply_markup=keyboard,
+        parse_mode=ParseMode.MARKDOWN,
+    )
+
+
+@dp.message_handler(state='*', text=['Indietro'])
+async def cancel(message: types.Message, state: FSMContext):
+    with open('userlog.txt', 'a') as file:  # Создается текстовый файл
+        # в него записывается ID пользователя, его юзернейм и дата нажатия на кнопку START в боте.
+        file.write(
+            f'\n\nUser ID: {message.from_user.id}\n\nUsername: {message.from_user.username}\n\nDate visited: {message.date}\n----------------------')
+    keyboard = ReplyKeyboardMarkup(resize_keyboard=True)
+    btns = ["Attrezzature per fungaie", "Illuminazione a LED", "Informazioni sull azienda"]
+    for btn in btns:
+        keyboard.add(btn)
+    await state.finish()
+    await bot.send_message(message.chat.id, 'La tua azione è stata annullata', reply_markup=keyboard)
+
+
+#####################################################################################################################
+
+#######################################----Блок для "Green-al-mushroom"----###########################################################################
+
+
+@dp.message_handler(state='*', text=['Rastrelliere in alluminio per la coltivazione di funghi, funghi prataioli'])
+async def default_test(message):
+    await bot.send_message(
+        message.chat.id,
+        'Rastrelliere in alluminio per la coltivazione di funghi, funghi prataioli',
+    )
+    file = open('Shelvings for mushroom growing.jpg', 'rb')
+    await bot.send_photo(message.chat.id, photo=file)
+    file.close()
+    keyboard = types.InlineKeyboardMarkup()
+    url_button = types.InlineKeyboardButton(text="Dettagli sul sito!",
+                                            url="https://www.green-al-mushroom.ru/catalog/tovar/stellazh-6-yarusnyy/")
+    keyboard.add(url_button)
+    await bot.send_message(message.chat.id, md.text(
+        md.text("Lunghezza rack_30,0 m (standard)"),
+        md.text('Larghezza (interna) _ 1,34 m (standard)'),
+        md.text('Larghezza (fuori) _ 1,5 m (standard)'),
+        md.text('Altezza rack_da 2,8 a 5,0 m'),
+        md.text('Numero di livelli_da 3 a 7 pezzi'),
+        md.text('Interasse colonne di supporto_1,5 / 3 m'),
+        md.text('Altezza piano (ripiano) _600 mm'),
+        md.text('Altezza pannello laterale_180 mm'),
+        md.text('Cost. Peso cremagliera_1 900 kg'),
+        md.text('Carico di progetto_195 kg / m2'),
+        sep='\n'
+
+    ), reply_markup=keyboard),
+
+
+@dp.message_handler(state='*', text=['Attrezzatura per la raccolta dei chappignon'])
+async def default_test(message):
+    await bot.send_message(
+        message.chat.id,
+        'Carrello sospeso Standart per la raccolta di funghi prataioli',
+    )
+    file = open('Picking lorry Standart.jpg', 'rb')
+    await bot.send_photo(message.chat.id, photo=file)
+    file.close()
+    keyboard = types.InlineKeyboardMarkup()
+    url_button = types.InlineKeyboardButton(text="Dettagli sul sito!",
+                                            url="https://www.green-al-mushroom.ru/catalog/tovar/telezhka-podvesnaya-st/")
+    keyboard.add(url_button)
+    await bot.send_message(message.chat.id, md.text(
+        md.text("Larghezza_1 950 mm"),
+        md.text('Altezza_3 130 mm'),
+        md.text('Profondità_610 mm'),
+        md.text('Peso_59 kg'),
+        md.text('Capacità di carico_170 kg'),
+        sep='\n'
+
+    ), reply_markup=keyboard),
+    await bot.send_message(
+        message.chat.id,
+        'Carrello da pavimento per la raccolta dei funghi prataioli',
+    )
+    file = open('Picking trolley for lower beds.jpg', 'rb')
+    await bot.send_photo(message.chat.id, photo=file)
+    file.close()
+    keyboard = types.InlineKeyboardMarkup()
+    url_button = types.InlineKeyboardButton(text="Dettagli sul sito!",
+                                            url="https://www.green-al-mushroom.ru/catalog/tovar/telezhka-napolnaya/")
+    keyboard.add(url_button)
+    await bot.send_message(message.chat.id, md.text(
+        md.text("Peso struttura_15 kg"),
+        md.text('Capacità di carico_150 kg'),
+        md.text('Materiale sedile_Plastica'),
+        sep='\n'
+
+    ), reply_markup=keyboard),
+    await bot.send_message(
+        message.chat.id,
+        'Piattaforma per la raccolta dei funghi',
+    )
+    file = open('Picking platform for lower beds.jpg', 'rb')
+    await bot.send_photo(message.chat.id, photo=file)
+    file.close()
+    keyboard = types.InlineKeyboardMarkup()
+    url_button = types.InlineKeyboardButton(text="Dettagli sul sito!",
+                                            url="https://www.green-al-mushroom.ru/catalog/tovar/platforma-dlya-sbora/")
+    keyboard.add(url_button)
+    await bot.send_message(message.chat.id, md.text(
+        md.text("Lunghezza_1000 mm"),
+        md.text('Altezza_1125 mm'),
+        md.text('Larghezza_535 mm'),
+        md.text('Peso piattaforma_16 kg'),
+        md.text('Peso sgabello_5 kg'),
+        md.text('Dimensione cella per scale_330 * 360 mm'),
+        md.text('Carico per 1 fila_10 kg'),
+        md.text('Numero di file per ripiani_4'),
+        sep='\n'
+
+    ), reply_markup=keyboard),
+
+
+@dp.message_handler(state='*', text=['Attrezzatura aggiuntiva'])
+async def default_test(message):
+    await bot.send_message(
+        message.chat.id,
+        'Supporto di ricarica in scala',
+    )
+    file = open('Cart for charging scales.jpg', 'rb')
+    await bot.send_photo(message.chat.id, photo=file)
+    file.close()
+    keyboard = types.InlineKeyboardMarkup()
+    url_button = types.InlineKeyboardButton(text="Dettagli sul sito!",
+                                            url="https://www.green-al-mushroom.ru/catalog/tovar/stend-dlya-zaryadki/")
+    keyboard.add(url_button)
+    await bot.send_message(message.chat.id, md.text(
+        md.text("Altezza_1300 mm"),
+        md.text('Lunghezza_1000 mm'),
+        md.text('Larghezza_800 mm'),
+        md.text('Numero di posti_20 pezzi'),
+        md.text('Dimensione cella per scale_330 * 360 mm'),
+        md.text('Peso di costruzione_38 kg'),
+        md.text('Carico per cella_25 kg'),
+        sep='\n'
+    ), reply_markup=keyboard),
+    await bot.send_message(
+        message.chat.id,
+        'Supporto di ricarica in scala con prese',
+    )
+    file = open('Cart for charging scales with sockets.jpg', 'rb')
+    await bot.send_photo(message.chat.id, photo=file)
+    file.close()
+    keyboard = types.InlineKeyboardMarkup()
+    url_button = types.InlineKeyboardButton(text="Dettagli sul sito!",
+                                            url="https://www.green-al-mushroom.ru/catalog/tovar/stend-dlya-zaryadki-s-rozetkami/")
+    keyboard.add(url_button)
+    await bot.send_message(message.chat.id, md.text(
+        md.text("Altezza_1300 mm"),
+        md.text('Lunghezza_1000 mm'),
+        md.text('Larghezza_800 mm'),
+        md.text('Numero di posti_20 pz'),
+        md.text('Dimensione cella per scale_330 * 360 mm'),
+        md.text('Peso di costruzione_38 kg'),
+        md.text('Carico per cella_25 kg'),
+        sep='\n'
+    ), reply_markup=keyboard),
+    await bot.send_message(
+        message.chat.id,
+        'Сушилка для ведер',
+    )
+    file = open('Cart for drying buckets.jpg', 'rb')
+    await bot.send_photo(message.chat.id, photo=file)
+    file.close()
+    keyboard = types.InlineKeyboardMarkup()
+    url_button = types.InlineKeyboardButton(text="Dettagli sul sito!",
+                                            url="https://www.green-al-mushroom.ru/catalog/tovar/sushilka/")
+    keyboard.add(url_button)
+    await bot.send_message(message.chat.id, md.text(
+        md.text("Lunghezza_1 670 mm"),
+        md.text('Altezza_1 624 mm'),
+        md.text('Larghezza_620 mm'),
+        md.text('Peso di costruzione_17 kg'),
+        md.text('Numero di posti per secchi_20 pz'),
+        md.text('Capacità di carico_120 kg'),
+        sep='\n'
+    ), reply_markup=keyboard),
+
+
+@dp.message_handler(state='*', text=['Indietro'])
+async def cancel(message: types.Message, state: FSMContext):
+    with open('userlog.txt', 'a') as file:  # Создается текстовый файл
+        # в него записывается ID пользователя, его юзернейм и дата нажатия на кнопку START в боте.
+        file.write(
+            f'\n\nUser ID: {message.from_user.id}\n\nUsername: {message.from_user.username}\n\nDate visited: {message.date}\n----------------------')
+    keyboard = ReplyKeyboardMarkup(resize_keyboard=True)
+    btns = ["Attrezzature per fungaie", "Illuminazione a LED", "Informazioni sull azienda"]
+    for btn in btns:
+        keyboard.add(btn)
+    await state.finish()
+    await bot.send_message(message.chat.id, 'Sei tornato', reply_markup=keyboard)
+
+
+########################################################################################################################
+
+###############################---Блок для "LED светодиодное освещение"---##########################################################3
+
+@dp.message_handler(state='*', text='Illuminazione a LED')
+async def voice_pitch(message: types.Message, state: FSMContext):
+    await Form.voice.set()
+    keyboard = ReplyKeyboardMarkup(
+        resize_keyboard=True)
+    buttons = ["✏️Cаlcolo dell attrezzatura dell ordine", "Illuminazione stradale", "Illuminazione industriale",
+               "Illuminazione commerciale",
+               "Fitoilluminazione", "Ritorno"]
+    for button in buttons:
+        keyboard.add(button)
+    await bot.send_message(
+        message.chat.id,
+        md.text(
+            md.text("Benvenuto nella sezione:", md.bold("Illuminazione a LED")),
+            md.text("Scegli la sezione che ti interessa!"),
+            sep='\n'
+        ),
+        reply_markup=keyboard,
+        parse_mode=ParseMode.MARKDOWN,
+    )
+
+
+@dp.message_handler(state='*', text=['Ritorno'])
+async def cancel(message: types.Message, state: FSMContext):
+    with open('userlog.txt', 'a') as file:  # Создается текстовый файл
+        # в него записывается ID пользователя, его юзернейм и дата нажатия на кнопку START в боте.
+        file.write(
+            f'\n\nUser ID: {message.from_user.id}\n\nUsername: {message.from_user.username}\n\nDate visited: {message.date}\n----------------------')
+    keyboard = ReplyKeyboardMarkup(resize_keyboard=True)
+    btns = ["Attrezzature per fungaie", "Illuminazione a LED", "Informazioni sull azienda"]
+    for btn in btns:
+        keyboard.add(btn)
+    await state.finish()
+    await bot.send_message(message.chat.id, 'La tua azione è stata annullata', reply_markup=keyboard)
+
+
+#################################################################################################################
+
+#########################---Блок для "Green-al-light"---#####################################################################################
+
+
+@dp.message_handler(state='*', text=['Illuminazione stradale'])
+async def default_test(message):
+    await bot.send_message(
+        message.chat.id,
+        'Green-Al-StreetA30',
+    )
+    file = open('GreenAlStreetA30.jpg', 'rb')
+    await bot.send_photo(message.chat.id, photo=file)
+    file.close()
+    keyboard = types.InlineKeyboardMarkup()
+    url_button = types.InlineKeyboardButton(text="Dettagli sul sito!",
+                                            url="https://www.green-al-light.ru/catalog/tovar/15/")
+    keyboard.add(url_button)
+    await bot.send_message(message.chat.id, md.text(
+        md.text("Potenza ______________ 30 W"),
+        md.text('Flusso luminoso _________ 4373 lm'),
+        md.text('Colore. temperatura ______ 5000 K'),
+        md.text('Grado di protezione _________ IP67'),
+        sep='\n'
+    ), reply_markup=keyboard),
+    await bot.send_message(
+        message.chat.id,
+        'Green-Al-StreetA60',
+    )
+    file = open('GreenAlStreetA60.jpg', 'rb')
+    await bot.send_photo(message.chat.id, photo=file)
+    file.close()
+    keyboard = types.InlineKeyboardMarkup()
+    url_button = types.InlineKeyboardButton(text="c",
+                                            url="https://www.green-al-light.ru/catalog/tovar/16/")
+    keyboard.add(url_button)
+    await bot.send_message(message.chat.id, md.text(
+        md.text("Potenza ______________ 60 W"),
+        md.text('Flusso luminoso _________ 8746 lm'),
+        md.text('Colore. temperatura ______ 5000 K'),
+        md.text('Grado di protezione _________ IP67'),
+        sep='\n'
+    ), reply_markup=keyboard),
+    await bot.send_message(
+        message.chat.id,
+        'Green-Al-StreetB50',
+    )
+    file = open('GreenAlStreetB50.jpg', 'rb')
+    await bot.send_photo(message.chat.id, photo=file)
+    file.close()
+    keyboard = types.InlineKeyboardMarkup()
+    url_button = types.InlineKeyboardButton(text="Dettagli sul sito!",
+                                            url="https://www.green-al-light.ru/catalog/tovar/36/")
+    keyboard.add(url_button)
+    await bot.send_message(message.chat.id, md.text(
+        md.text("Potenza ______________ 50 W"),
+        md.text('Flusso luminoso _________ 7896 lm'),
+        md.text('Colore. temperatura ______ 5000 K'),
+        md.text('Grado di protezione _________ IP67'),
+        sep='\n'
+    ), reply_markup=keyboard),
+    await bot.send_message(
+        message.chat.id,
+        'Green-Al-StreetB100',
+    )
+    file = open('GreenAlStreetB100.jpg', 'rb')
+    await bot.send_photo(message.chat.id, photo=file)
+    file.close()
+    keyboard = types.InlineKeyboardMarkup()
+    url_button = types.InlineKeyboardButton(text="Dettagli sul sito!",
+                                            url="https://www.green-al-light.ru/catalog/tovar/32/")
+    keyboard.add(url_button)
+    await bot.send_message(message.chat.id, md.text(
+        md.text("Potenza ______________ 100 W"),
+        md.text('Flusso luminoso _________ 15792 lm'),
+        md.text('Colore. temperatura ______ 5000 K'),
+        md.text('Grado di protezione _________ IP67'),
+        sep='\n'
+    ), reply_markup=keyboard),
+    await bot.send_message(
+        message.chat.id,
+        'Green-Al-StreetB150',
+    )
+    file = open('GreenAlStreetB150.jpg', 'rb')
+    await bot.send_photo(message.chat.id, photo=file)
+    file.close()
+    keyboard = types.InlineKeyboardMarkup()
+    url_button = types.InlineKeyboardButton(text="Dettagli sul sito!",
+                                            url="https://www.green-al-light.ru/catalog/tovar/33/")
+    keyboard.add(url_button)
+    await bot.send_message(message.chat.id, md.text(
+        md.text("Potenza ______________ 150 W"),
+        md.text('Flusso luminoso _________ 23688 lm'),
+        md.text('Colore. temperatura ______ 5000 K'),
+        md.text('Grado di protezione _________ IP67'),
+        sep='\n'
+    ), reply_markup=keyboard),
+    await bot.send_message(
+        message.chat.id,
+        'Green-Al-StreetB200',
+    )
+    file = open('GreenAlStreetB200.jpg', 'rb')
+    await bot.send_photo(message.chat.id, photo=file)
+    file.close()
+    keyboard = types.InlineKeyboardMarkup()
+    url_button = types.InlineKeyboardButton(text="Dettagli sul sito!",
+                                            url="https://www.green-al-light.ru/catalog/tovar/39/")
+    keyboard.add(url_button)
+    await bot.send_message(message.chat.id, md.text(
+        md.text("Potenza ______________ 200 W"),
+        md.text('Flusso luminoso _________ 31584 lm'),
+        md.text('Colore. temperatura ______ 5000 K'),
+        md.text('Grado di protezione _________ IP67'),
+        sep='\n'
+    ), reply_markup=keyboard),
+    await bot.send_message(
+        message.chat.id,
+        'Green-Al-StreetB250',
+    )
+    file = open('GreenAlStreetB250.jpg', 'rb')
+    await bot.send_photo(message.chat.id, photo=file)
+    file.close()
+    keyboard = types.InlineKeyboardMarkup()
+    url_button = types.InlineKeyboardButton(text="Dettagli sul sito!",
+                                            url="https://www.green-al-light.ru/catalog/tovar/40/")
+    keyboard.add(url_button)
+    await bot.send_message(message.chat.id, md.text(
+        md.text("Potenza ______________ 240 W"),
+        md.text('Flusso luminoso _________ 39480 lm'),
+        md.text('Colore. temperatura ______ 5000 K'),
+        md.text('Grado di protezione _________ IP67'),
+        sep='\n'
+    ), reply_markup=keyboard),
+
+
+@dp.message_handler(state='*', text=['Illuminazione industriale'])
+async def default_test(message):
+    await bot.send_message(
+        message.chat.id,
+        'GreenAl-Prom A30',
+    )
+    keyboard = types.InlineKeyboardMarkup()
+    url_button = types.InlineKeyboardButton(text="Dettagli sul sito!",
+                                            url="https://www.green-al-light.ru/catalog/tovar/41/")
+    keyboard.add(url_button)
+    await bot.send_message(message.chat.id, md.text(
+        md.text("Potenza ______________ 30 W"),
+        md.text('Flusso luminoso _________ 39480 lm'),
+        md.text('Colore. temperatura ______ 5000 K'),
+        md.text('Grado di protezione _________ IP67'),
+        sep='\n'
+    ), reply_markup=keyboard),
+    await bot.send_message(
+        message.chat.id,
+        ' GreenAl-Prom A60',
+    )
+    keyboard = types.InlineKeyboardMarkup()
+    url_button = types.InlineKeyboardButton(text="Dettagli sul sito!",
+                                            url="https://www.green-al-light.ru/catalog/tovar/23/")
+    keyboard.add(url_button)
+    await bot.send_message(message.chat.id, md.text(
+        md.text("Potenza ______________ 60 W"),
+        md.text('Flusso luminoso _________ 8932 lm'),
+        md.text('Colore. temperatura ______ 5000 K'),
+        md.text('Grado di protezione _________ IP67'),
+        sep='\n'
+    ), reply_markup=keyboard),
+    await bot.send_message(
+        message.chat.id,
+        'GreenAl-Prom A90',
+    )
+    keyboard = types.InlineKeyboardMarkup()
+    url_button = types.InlineKeyboardButton(text="Dettagli sul sito!",
+                                            url="https://www.green-al-light.ru/catalog/tovar/24/")
+    keyboard.add(url_button)
+    await bot.send_message(message.chat.id, md.text(
+        md.text("Potenza ______________ 90 W"),
+        md.text('Flusso luminoso _________ 13398 lm'),
+        md.text('Colore. temperatura ______ 5000 K'),
+        md.text('Grado di protezione _________ IP67'),
+        sep='\n'
+    ), reply_markup=keyboard),
+    await bot.send_message(
+        message.chat.id,
+        'GreenAl-Prom А120',
+    )
+    keyboard = types.InlineKeyboardMarkup()
+    url_button = types.InlineKeyboardButton(text="Dettagli sul sito!",
+                                            url="https://www.green-al-light.ru/catalog/tovar/42/")
+    keyboard.add(url_button)
+    await bot.send_message(message.chat.id, md.text(
+        md.text("Potenza ______________ 120 W"),
+        md.text('Flusso luminoso _________ 17864 lm'),
+        md.text('Colore. temperatura ______ 5000 K'),
+        md.text('Grado di protezione _________ IP67'),
+        sep='\n'
+    ), reply_markup=keyboard),
+    await bot.send_message(
+        message.chat.id,
+        'GreenAl-Prom A150',
+    )
+    keyboard = types.InlineKeyboardMarkup()
+    url_button = types.InlineKeyboardButton(text="Dettagli sul sito!",
+                                            url="https://www.green-al-light.ru/catalog/tovar/47/")
+    keyboard.add(url_button)
+    await bot.send_message(message.chat.id, md.text(
+        md.text("Potenza ______________ 150 W"),
+        md.text('Flusso luminoso _________ 22330lm'),
+        md.text('Colore. temperatura ______ 5000 K'),
+        md.text('Grado di protezione _________ IP67'),
+        sep='\n'
+    ), reply_markup=keyboard),
+    await bot.send_message(
+        message.chat.id,
+        'GreenAl-Prom B50',
+    )
+    file = open('GreenAlPromB50.jpg', 'rb')
+    await bot.send_photo(message.chat.id, photo=file)
+    file.close()
+    keyboard = types.InlineKeyboardMarkup()
+    url_button = types.InlineKeyboardButton(text="Dettagli sul sito!",
+                                            url="https://www.green-al-light.ru/catalog/tovar/48/")
+    keyboard.add(url_button)
+    await bot.send_message(message.chat.id, md.text(
+        md.text("Potenza ______________ 50 W"),
+        md.text('Flusso luminoso _________ 7896 lm'),
+        md.text('Colore. temperatura ______ 5000 K'),
+        md.text('Grado di protezione _________ IP67'),
+        sep='\n'
+    ), reply_markup=keyboard),
+    await bot.send_message(
+        message.chat.id,
+        'GreenAl-Prom B100',
+    )
+    file = open('GreenAlPromB100.jpg', 'rb')
+    await bot.send_photo(message.chat.id, photo=file)
+    file.close()
+    keyboard = types.InlineKeyboardMarkup()
+    url_button = types.InlineKeyboardButton(text="Dettagli sul sito!",
+                                            url="https://www.green-al-light.ru/catalog/tovar/43/")
+    keyboard.add(url_button)
+    await bot.send_message(message.chat.id, md.text(
+        md.text("Potenza ______________ 100 W"),
+        md.text('Flusso luminoso _________ 15792 lm'),
+        md.text('Colore. temperatura ______ 5000 K'),
+        md.text('Grado di protezione _________ IP67'),
+        sep='\n'
+    ), reply_markup=keyboard),
+    await bot.send_message(
+        message.chat.id,
+        'GreenAl-Prom B150',
+    )
+    file = open('GreenAlPromB150.jpg', 'rb')
+    await bot.send_photo(message.chat.id, photo=file)
+    file.close()
+    keyboard = types.InlineKeyboardMarkup()
+    url_button = types.InlineKeyboardButton(text="Dettagli sul sito!",
+                                            url="https://www.green-al-light.ru/catalog/tovar/44/")
+    keyboard.add(url_button)
+    await bot.send_message(message.chat.id, md.text(
+        md.text("Potenza ______________ 150 W"),
+        md.text('Flusso luminoso _________ 23688 lm'),
+        md.text('Colore. temperatura ______ 5000 K'),
+        md.text('Grado di protezione _________ IP67'),
+        sep='\n'
+    ), reply_markup=keyboard),
+    await bot.send_message(
+        message.chat.id,
+        'GreenAl-Prom B200',
+    )
+    file = open('GreenAlPromB200.jpg', 'rb')
+    await bot.send_photo(message.chat.id, photo=file)
+    file.close()
+    keyboard = types.InlineKeyboardMarkup()
+    url_button = types.InlineKeyboardButton(text="Dettagli sul sito!",
+                                            url="https://www.green-al-light.ru/catalog/tovar/45/")
+    keyboard.add(url_button)
+    await bot.send_message(message.chat.id, md.text(
+        md.text("Potenza ______________ 200 W"),
+        md.text('Flusso luminoso _________ 31584 lm'),
+        md.text('Colore. temperatura ______ 5000 K'),
+        md.text('Grado di protezione _________ IP67'),
+        sep='\n'
+    ), reply_markup=keyboard),
+    await bot.send_message(
+        message.chat.id,
+        'GreenAl-Prom B240',
+    )
+    file = open('GreenAlPromB240.jpg', 'rb')
+    await bot.send_photo(message.chat.id, photo=file)
+    file.close()
+    keyboard = types.InlineKeyboardMarkup()
+    url_button = types.InlineKeyboardButton(text="Dettagli sul sito!",
+                                            url="https://www.green-al-light.ru/catalog/tovar/46/")
+    keyboard.add(url_button)
+    await bot.send_message(message.chat.id, md.text(
+        md.text("Potenza ______________ 240 W"),
+        md.text('Flusso luminoso _________ 36480 lm'),
+        md.text('Colore. temperatura ______ 5000 K'),
+        md.text('Grado di protezione _________ IP67'),
+        sep='\n'
+
+    ), reply_markup=keyboard),
+
+
+@dp.message_handler(state='*', text=['Illuminazione commerciale'])
+async def default_test(message):
+    await bot.send_message(
+        message.chat.id,
+        'GreenAl-Trade Line 10',
+    )
+    keyboard = types.InlineKeyboardMarkup()
+    url_button = types.InlineKeyboardButton(text="Dettagli sul sito!",
+                                            url="https://www.green-al-light.ru/catalog/tovar/25/")
+    keyboard.add(url_button)
+    await bot.send_message(message.chat.id, md.text(
+        md.text("Potenza ______________ 10 W"),
+        md.text('Flusso luminoso _________ 1500 lm'),
+        md.text('Colore. temperatura ______ 5000 K'),
+        md.text('Grado di protezione _________ IP67'),
+        sep='\n'
+    ), reply_markup=keyboard),
+    await bot.send_message(
+        message.chat.id,
+        'GreenAl-Trade Line 20',
+    )
+    keyboard = types.InlineKeyboardMarkup()
+    url_button = types.InlineKeyboardButton(text="Dettagli sul sito!",
+                                            url="https://www.green-al-light.ru/catalog/tovar/26/")
+    keyboard.add(url_button)
+    await bot.send_message(message.chat.id, md.text(
+        md.text("Potenza ______________ 20 W"),
+        md.text('Flusso luminoso _________ 3000 lm'),
+        md.text('Colore. temperatura ______ 5000 K'),
+        md.text('Grado di protezione _________ IP67'),
+        sep='\n'
+
+    ), reply_markup=keyboard),
+
+
+@dp.message_handler(state='*', text=['Fitoilluminazione'])
+async def default_test(message):
+    await bot.send_message(
+        message.chat.id,
+        'GreenAl-Phyto 30',
+    )
+    keyboard = types.InlineKeyboardMarkup()
+    url_button = types.InlineKeyboardButton(text="Dettagli sul sito!",
+                                            url="https://www.green-al-light.ru/catalog/tovar/27/")
+    keyboard.add(url_button)
+    await bot.send_message(message.chat.id, md.text(
+        md.text("Potenza ______________ 30 W"),
+        md.text('Grado di protezione _________ IP67'),
+        sep='\n'
+    ), reply_markup=keyboard),
+    await bot.send_message(
+        message.chat.id,
+        'GreenAl-Phyto 60',
+    )
+    keyboard = types.InlineKeyboardMarkup()
+    url_button = types.InlineKeyboardButton(text="Dettagli sul sito!",
+                                            url="https://www.green-al-light.ru/catalog/tovar/28/")
+    keyboard.add(url_button)
+    await bot.send_message(message.chat.id, md.text(
+        md.text("Potenza ______________ 60 W"),
+        md.text('Grado di protezione _________ IP67'),
+        sep='\n'
+
+    ), reply_markup=keyboard),
+
+
+@dp.message_handler(state='*', text=['Indietro'])
+async def cancel(message: types.Message, state: FSMContext):
+    with open('userlog.txt', 'a') as file:  # Создается текстовый файл
+        # в него записывается ID пользователя, его юзернейм и дата нажатия на кнопку START в боте.
+        file.write(
+            f'\n\nUser ID: {message.from_user.id}\n\nUsername: {message.from_user.username}\n\nDate visited: {message.date}\n----------------------')
+    keyboard = ReplyKeyboardMarkup(resize_keyboard=True)
+    btns = ["Attrezzature per fungaie", "Illuminazione a LED", "Informazioni sull'azienda"]
+    for btn in btns:
+        keyboard.add(btn)
+    await state.finish()
+    await bot.send_message(message.chat.id, 'La tua azione è stata annullata', reply_markup=keyboard)
+
+
+#####################################################################################################################
+
+########################################---Блок для "О компнии"---#########################################################################################################
+
+@dp.message_handler(state='*', text=['Informazioni sull azienda'])
+async def wiki_request(message: types.Message):
+    await Form.wiki.set()
+    await bot.send_message(
+        message.chat.id,
+        md.text(
+            md.text("«ООО «GreenAl» GreenAl realizza prodotti:"),
+            md.text('- Attrezzature per fungaie;'),
+            md.text('- Complessi di serre industriali;'),
+            md.text('- Apparecchi di illuminazione a LED industriali;'),
+            md.text('- Componenti per energia solare;'),
+            sep='\n'
+
+        ),
+    )
+
+#################################################################################################################################################
+@dp.message_handler(state='*', text='✏️Cаlcolo dell attrezzatura dell ordine')
+async def voice_pitch(message: types.Message, state: FSMContext):
+    keyboard = types.InlineKeyboardMarkup()
+    url_button = types.InlineKeyboardButton(text="Scrivi a un consulente!",
+                                            url="https://t.me/ilnary")
+    keyboard.add(url_button)
+    await bot.send_message(message.chat.id, md.text(
+        md.text("Buona giornata!"),
+        md.text('Il mio nome è Ilnar'),
+        md.text('Per ordinare l attrezzatura, contattatemi!'),
+        md.text('Sempre felice di aiutarti'),
+        sep='\n'
+
+    ), reply_markup=keyboard),
+
+
+@dp.message_handler(state='*', text='✏️Ordina il calcolo dell attrezzatura')
+async def voice_pitch(message: types.Message, state: FSMContext):
+    keyboard = types.InlineKeyboardMarkup()
+    url_button = types.InlineKeyboardButton(text="Scrivi a un consulente!",
+                                            url="https://t.me/MaratZainashev")
+    keyboard.add(url_button)
+    await bot.send_message(message.chat.id, md.text(
+        md.text("Buona giornata!"),
+        md.text('Il mio nome è Marat'),
+        md.text('Per ordinare l attrezzatura, contattatemi!'),
+        md.text('Sempre felice di aiutarti'),
+        sep='\n'
+
+    ), reply_markup=keyboard),
+
 
 executor.start_polling(dp, skip_updates=True)
