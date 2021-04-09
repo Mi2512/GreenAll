@@ -37,12 +37,6 @@ class \
 
 @dp.message_handler(commands='start')
 async def start_cmd(message: types.Message):
-    if not users_db.find_one({"chat_id": message.chat.id}):
-        users_db.insert_one({"chat_id": message.chat.id})
-        await bot.send_message(message.chat.id, HELLO_MESSAGE)
-        # Если пользователь есть в базе
-    else:
-        await bot.send_message(message.chat.id, HELLO_AGAIN_MESSAGE)
     chatId = message.chat.id
     text = message.text.lower()
     keyboard = ReplyKeyboardMarkup(
