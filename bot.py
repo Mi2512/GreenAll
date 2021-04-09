@@ -12,9 +12,6 @@ from aiogram.types import ParseMode
 from aiogram.types.reply_keyboard import ReplyKeyboardMarkup
 from aiogram.utils import executor
 
-from messages import *
-from db import users_db
-
 logging.basicConfig(level=logging.DEBUG)
 
 BOT_TOKEN = '1751857325:AAGmVcJn048qm_EXFDB8tO28Q2mElx-6KSg'
