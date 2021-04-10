@@ -1,9 +1,7 @@
 import logging
 import random
 import string
-import emoji
 import aiogram.utils.markdown as md
-import keyboard as keyboard
 
 from aiogram import Bot, Dispatcher, types
 from aiogram.contrib.fsm_storage.memory import MemoryStorage
@@ -14,12 +12,10 @@ from aiogram.types import ParseMode
 from aiogram.types.reply_keyboard import ReplyKeyboardMarkup
 from aiogram.utils import executor
 
-from messages import *
-from db import users_db
 
 logging.basicConfig(level=logging.DEBUG)
 
-BOT_TOKEN = '1767589392:AAG_A359ruZWcbfGQL-u5icTH5ljSZRERYQ'
+BOT_TOKEN = '1648899890:AAFb84k-TSA6dX6HUFbMkwyK6oNH2wfADjM'
 
 bot = Bot(token=BOT_TOKEN)
 
@@ -42,12 +38,6 @@ class \
 
 @dp.message_handler(commands='start')
 async def start_cmd(message: types.Message):
-    if not users_db.find_one({"chat_id": message.chat.id}):
-        users_db.insert_one({"chat_id": message.chat.id})
-        await bot.send_message(message.chat.id, HELLO_MESSAGE)
-        # Если пользователь есть в базе
-    else:
-        await bot.send_message(message.chat.id, HELLO_AGAIN_MESSAGE)
     chatId = message.chat.id
     text = message.text.lower()
     keyboard = ReplyKeyboardMarkup(
