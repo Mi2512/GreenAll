@@ -366,7 +366,7 @@ async def cancel(message: types.Message, state: FSMContext):
     for btn in btns:
         keyboard.add(btn)
     await state.finish()
-    await bot.send_message(message.chat.id, 'Вы вернулсь назад ', reply_markup=keyboard)
+    await bot.send_message(message.chat.id, 'Вы вернулись назад ', reply_markup=keyboard)
 
 
 ########################################################################################################################
@@ -786,7 +786,7 @@ async def cancel(message: types.Message, state: FSMContext):
     for btn in btns:
         keyboard.add(btn)
     await state.finish()
-    await bot.send_message(message.chat.id, 'Вы вернулсь назад ', reply_markup=keyboard)
+    await bot.send_message(message.chat.id, 'Вы вернулись назад ', reply_markup=keyboard)
 
 
 #####################################################################################################################
