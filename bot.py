@@ -820,8 +820,8 @@ async def voice_pitch(message: types.Message, state: FSMContext):
     await bot.send_message(message.chat.id, md.text(
         md.text("Добрый день!"),
         md.text('Меня зовут Ильнар'),
-        md.text('По вопросам заказа оборудывания обращайтесь ко мне!'),
-        md.text('Всегда рад помочь вам'),
+        md.text('По вопросам заказа оборудования обращайтесь ко мне!'),
+        md.text('Всегда рад помочь вам!'),
         sep='\n'
 
     ), reply_markup=keyboard),
@@ -836,8 +836,8 @@ async def voice_pitch(message: types.Message, state: FSMContext):
     await bot.send_message(message.chat.id, md.text(
         md.text("Добрый день!"),
         md.text('Меня зовут Марат'),
-        md.text('По вопросам заказа оборудывания обращайтесь комне!'),
-        md.text('Всегда рад помочь вам'),
+        md.text('По вопросам заказа оборудования обращайтесь ко мне!'),
+        md.text('Всегда рад помочь вам!'),
         sep='\n'
 
     ), reply_markup=keyboard),
