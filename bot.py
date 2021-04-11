@@ -95,7 +95,7 @@ async def voice_pitch(message: types.Message, state: FSMContext):
     keyboard = ReplyKeyboardMarkup(
         resize_keyboard=True, one_time_keyboard=False)
     buttons = ['✏️Закaзать расчёт оборудoвания', "Аллюминевые стеллажи для выращивания грибов, шампиньонов",
-               "Оборудование для сбора шапьпиньонов",
+               "Оборудование для сбора шамьпиньонов",
                "Дополнительное оборудование", "Назад"]
     for button in buttons:
         keyboard.add(button)
@@ -160,7 +160,7 @@ async def voice_pitch(message: types.Message, state: FSMContext):
     keyboard = ReplyKeyboardMarkup(
         resize_keyboard=True, one_time_keyboard=False)
     buttons = ['✏️Закaзать расчёт оборудoвания', "Аллюминевые стеллажи для выращивания грибов, шампиньонов",
-               "Оборудование для сбора шапьпиньонов",
+               "Оборудование для сбора шамьпиньонов",
                "Дополнительное оборудование", "Назад"]
     for button in buttons:
         keyboard.add(button)
@@ -224,7 +224,7 @@ async def default_test(message):
     ), reply_markup=keyboard),
 
 
-@dp.message_handler(state='*', text=['Оборудование для сбора шапьпиньонов'])
+@dp.message_handler(state='*', text=['Оборудование для сбора шамьпиньонов'])
 async def default_test(message):
     await bot.send_message(
         message.chat.id,
