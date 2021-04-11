@@ -94,7 +94,7 @@ async def voice_pitch(message: types.Message, state: FSMContext):
     await Form.voice.set()
     keyboard = ReplyKeyboardMarkup(
         resize_keyboard=True, one_time_keyboard=False)
-    buttons = ['✏️Закaзать расчёт оборудования', "Аллюминевые стеллажи для выращивания грибов, шампиньонов",
+    buttons = ['✏️Закaзать расчёт оборудoвания', "Аллюминевые стеллажи для выращивания грибов, шампиньонов",
                "Оборудование для сбора шапьпиньонов",
                "Дополнительное оборудование", "Назад"]
     for button in buttons:
@@ -116,7 +116,7 @@ async def voice_pitch(message: types.Message, state: FSMContext):
     await Form.voice.set()
     keyboard = ReplyKeyboardMarkup(
         resize_keyboard=True, one_time_keyboard=False)
-    buttons = ['✏️Заказать расчёт оборудования', "Уличное освещение", "Промышленное освещение", "Торговое освещение",
+    buttons = ['✏️Заказать рaсчёт оборудывания', "Уличное освещение", "Промышленное освещение", "Торговое освещение",
                "Фито-освещение", "Возврат"]
     for button in buttons:
         keyboard.add(button)
@@ -159,7 +159,7 @@ async def voice_pitch(message: types.Message, state: FSMContext):
     await Form.voice.set()
     keyboard = ReplyKeyboardMarkup(
         resize_keyboard=True, one_time_keyboard=False)
-    buttons = ['✏️Закaзать расчёт оборудования', "Аллюминевые стеллажи для выращивания грибов, шампиньонов",
+    buttons = ['✏️Закaзать расчёт оборудoвания', "Аллюминевые стеллажи для выращивания грибов, шампиньонов",
                "Оборудование для сбора шапьпиньонов",
                "Дополнительное оборудование", "Назад"]
     for button in buttons:
@@ -382,7 +382,7 @@ async def voice_pitch(message: types.Message, state: FSMContext):
     await Form.voice.set()
     keyboard = ReplyKeyboardMarkup(
         resize_keyboard=True, one_time_keyboard=False)
-    buttons = ['✏️Заказать расчёт оборудывания', "Уличное освещение", "Промышленное освещение", "Торговое освещение",
+    buttons = ['✏️Заказать рaсчёт оборудывания', "Уличное освещение", "Промышленное освещение", "Торговое освещение",
                "Фито-освещение", "Возврат"]
     for button in buttons:
         keyboard.add(button)
@@ -811,7 +811,7 @@ async def wiki_request(message: types.Message):
 
 
 #################################################################################################################################################
-@dp.message_handler(state='*', text='✏️Заказать расчёт оборудывания')
+@dp.message_handler(state='*', text='✏️Заказать рaсчёт оборудывания')
 async def voice_pitch(message: types.Message, state: FSMContext):
     keyboard = types.InlineKeyboardMarkup()
     url_button = types.InlineKeyboardButton(text="Написать консультанту!",
@@ -827,7 +827,7 @@ async def voice_pitch(message: types.Message, state: FSMContext):
     ), reply_markup=keyboard),
 
 
-@dp.message_handler(state='*', text='✏️Закaзать расчёт оборудывания')
+@dp.message_handler(state='*', text='✏️Закaзать расчёт оборудoвания')
 async def voice_pitch(message: types.Message, state: FSMContext):
     keyboard = types.InlineKeyboardMarkup()
     url_button = types.InlineKeyboardButton(text="Написать консультанту!",
