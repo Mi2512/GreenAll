@@ -36,7 +36,7 @@ class \
 
 ##############################################---Start для всех языков---##############################################################
 
-@dp.message_handler(commands=['start'])
+@dp.message_handler(commands=['/start'])
 async def start_cmd(message: types.Message):
     chatId = message.chat.id
     text = message.text.lower()
