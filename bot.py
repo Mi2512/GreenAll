@@ -159,7 +159,7 @@ async def voice_pitch(message: types.Message, state: FSMContext):
     await Form.voice.set()
     keyboard = ReplyKeyboardMarkup(
         resize_keyboard=True, one_time_keyboard=False)
-    buttons = ['✏️Закaзать расчёт оборудывания', "Аллюминевые стеллажи для выращивания грибов, шампиньонов",
+    buttons = ['✏️Закaзать расчёт оборудования', "Аллюминевые стеллажи для выращивания грибов, шампиньонов",
                "Оборудование для сбора шапьпиньонов",
                "Дополнительное оборудование", "Назад"]
     for button in buttons:
