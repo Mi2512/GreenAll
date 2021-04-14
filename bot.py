@@ -95,7 +95,7 @@ async def voice_pitch(message: types.Message, state: FSMContext):
     keyboard = ReplyKeyboardMarkup(
         resize_keyboard=True, one_time_keyboard=False)
     buttons = ['✏️Закaзать расчёт оборудoвания', "Аллюминевые стеллажи для выращивания грибов, шампиньонов",
-               "Оборудование для сбора шамьпиньонов",
+               "Оборудование для сбора шампиньонов",
                "Дополнительное оборудование", "Назад"]
     for button in buttons:
         keyboard.add(button)
@@ -160,7 +160,7 @@ async def voice_pitch(message: types.Message, state: FSMContext):
     keyboard = ReplyKeyboardMarkup(
         resize_keyboard=True, one_time_keyboard=False)
     buttons = ['✏️Закaзать расчёт оборудoвания', "Аллюминевые стеллажи для выращивания грибов, шампиньонов",
-               "Оборудование для сбора шамьпиньонов",
+               "Оборудование для сбора шампиньонов",
                "Дополнительное оборудование", "Назад"]
     for button in buttons:
         keyboard.add(button)
