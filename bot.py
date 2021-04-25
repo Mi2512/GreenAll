@@ -79,7 +79,7 @@ async def start_cmd(message: types.Message):
     await bot.send_message(
         message.chat.id,
         md.text(
-            md.text("Здравствуйте, я -", md.bold("Green Al bot")),
+            md.text("Здравствуйте, я -", md.bold("GreenAl bot")),
             md.text('Буду рад помочь вам!'),
             md.text('Воспользуйтесь клавиатурой, чтобы начать!'),
             sep='\n'
@@ -865,7 +865,7 @@ async def start_cmd(message: types.Message):
     await bot.send_message(
         message.chat.id,
         md.text(
-            md.text("Hi, I'm-", md.bold("Green Al bot")),
+            md.text("Hi, I'm-", md.bold("GreenAl bot")),
             md.text('I will be glad to help you!'),
             md.text('Use your keyboard to get started!'),
             sep='\n'
@@ -1675,7 +1675,7 @@ async def start_cmd(message: types.Message):
     await bot.send_message(
         message.chat.id,
         md.text(
-            md.text("Merhaba ben -", md.bold("Green Al bot")),
+            md.text("Merhaba ben -", md.bold("GreenAl bot")),
             md.text('Sana yardım etmekten memnun olacağım!'),
             md.text('Başlamak için klavyenizi kullanın!'),
             sep='\n'
@@ -2481,7 +2481,7 @@ async def start_cmd(message: types.Message):
     await bot.send_message(
         message.chat.id,
         md.text(
-            md.text("Cześć jestem -", md.bold("Green Al bot")),
+            md.text("Cześć jestem -", md.bold("GreenAl bot")),
             md.text('Chętnie Ci pomogę!'),
             md.text('Użyj klawiatury, aby rozpocząć!'),
             sep='\n'
@@ -3282,7 +3282,7 @@ async def start_cmd(message: types.Message):
     await bot.send_message(
         message.chat.id,
         md.text(
-            md.text("Hallo ich bin -", md.bold("Green Al bot")),
+            md.text("Hallo ich bin -", md.bold("GreenAl bot")),
             md.text('Ich helfe Ihnen gerne weiter!'),
             md.text('Verwenden Sie Ihre Tastatur, um loszulegen!'),
             sep='\n'
@@ -4075,7 +4075,7 @@ async def start_cmd(message: types.Message):
     await bot.send_message(
         message.chat.id,
         md.text(
-            md.text("Salut je suis -", md.bold("Green Al bot")),
+            md.text("Salut je suis -", md.bold("GreenAl bot")),
             md.text('Je serai ravi de vous aider!'),
             md.text('Utilisez votre clavier pour commencer!'),
             sep='\n'
@@ -4859,7 +4859,7 @@ async def start_cmd(message: types.Message):
     await bot.send_message(
         message.chat.id,
         md.text(
-            md.text("Ciao sono -", md.bold("Green Al bot")),
+            md.text("Ciao sono -", md.bold("GreenAl bot")),
             md.text('Sarò felice di aiutarti!'),
             md.text('Usa la tastiera per iniziare!'),
             sep='\n'
@@ -5652,7 +5652,7 @@ async def start_cmd(message: types.Message):
     await bot.send_message(
         message.chat.id,
         md.text(
-            md.text("مرحبا أنا -", md.bold("Green Al bot")),
+            md.text("مرحبا أنا -", md.bold("GreenAl bot")),
             md.text('سأكون مسرورا بمساعدتك!'),
             md.text('استخدم لوحة المفاتيح لتبدأ!'),
             sep='\n'
@@ -6435,7 +6435,7 @@ async def start_cmd(message: types.Message):
     await bot.send_message(
         message.chat.id,
         md.text(
-            md.text("Hola yo soy -", md.bold("Green Al bot")),
+            md.text("Hola yo soy -", md.bold("GreenAl bot")),
             md.text('¡Estaré encantado de ayudarle!'),
             md.text('¡Usa tu teclado para comenzar!'),
             sep='\n'
